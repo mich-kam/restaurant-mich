@@ -1,0 +1,960 @@
+{% extends 'restaurant/base.html' %}
+{% load image_tags %}
+{% load static %}
+
+
+{% block title %}Événements - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/events.css' %}">
+<style>
+    .events-hero {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+        position: relative;
+    }
+    
+    .events-hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    
+    .events-hero-background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .events-hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: -1;
+    }
+
+    .events-hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .events-hero p {
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    .events-filters {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 50px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    /* Mode sombre pour les événements */
+    [data-theme="dark"] .events-filters {
+        background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+        border-bottom: 1px solid #333333;
+    }
+
+    [data-theme="dark"] .event-card {
+        background: #111111;
+        border: 1px solid #333333;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    }
+
+    [data-theme="dark"] .event-title {
+        color: #ffffff;
+    }
+
+    [data-theme="dark"] .event-meta {
+        color: #b0b0b0;
+    }
+
+    [data-theme="dark"] .event-description {
+        color: #b0b0b0;
+    }
+
+    [data-theme="dark"] .filter-group label {
+        color: #ffffff;
+    }
+
+    [data-theme="dark"] .filter-group select,
+    [data-theme="dark"] .filter-group input {
+        background: #1a1a1a;
+        border-color: #333333;
+        color: #ffffff;
+    }
+
+    [data-theme="dark"] .filter-group select:focus,
+    [data-theme="dark"] .filter-group input:focus {
+        border-color: #ff6b35;
+    }
+
+    .filter-section {
+        display: flex;
+        gap: 10px;
+        align-items: end;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 200px;
+    }
+
+    .filter-group label {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+        padding: 12px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+        outline: none;
+        border-color: #ff6b35;
+    }
+
+    .events-grid {
+        padding: 80px 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 10px;
+    }
+
+    .event-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        border: 1px solid #f0f0f0;
+        margin: 0;
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .event-featured-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .event-full-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .event-capacity {
+        margin: 15px 0;
+    }
+
+    .capacity-bar {
+        width: 100%;
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .capacity-fill {
+        height: 100%;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        transition: width 0.3s ease;
+    }
+
+    .capacity-text {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .event-price {
+        text-align: center;
+        margin: 15px 0;
+        padding: 10px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 10px;
+    }
+
+    .price-amount {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ff6b35;
+        display: block;
+    }
+
+    .price-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .btn-disabled {
+        background: #6c757d !important;
+        color: white !important;
+        cursor: not-allowed !important;
+        opacity: 0.6;
+    }
+
+    .btn-disabled:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .event-image {
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .event-card:hover .event-image img {
+        transform: scale(1.05);
+    }
+
+    .event-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,107,53,0.8), rgba(255,107,53,0.4));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .event-card:hover .event-image::before {
+        opacity: 1;
+    }
+
+    .event-date-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #ff6b35;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        z-index: 2;
+    }
+
+    .event-content {
+        padding: 30px;
+    }
+
+    .event-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #333;
+        line-height: 1.3;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .event-meta {
+        display: flex;
+        gap: 25px;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+        color: #666;
+        flex-wrap: wrap;
+    }
+
+    .event-meta i {
+        color: #ff6b35;
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .event-description {
+        color: #666;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        font-size: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .event-actions {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-event {
+        padding: 12px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95rem;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .btn-primary-event {
+        background: #ff6b35;
+        color: white;
+    }
+
+    .btn-primary-event:hover {
+        background: #e55a2b;
+        color: white;
+    }
+
+    .btn-secondary-event {
+        background: transparent;
+        color: #ff6b35;
+        border: 2px solid #ff6b35;
+    }
+
+    .btn-secondary-event:hover {
+        background: #ff6b35;
+        color: white;
+    }
+
+    .events-stats {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .events-stats::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .upcoming-events {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 80px 0;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 1.2;
+    }
+
+    .section-title p {
+        color: #666;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .no-events {
+        text-align: center;
+        padding: 60px 0;
+        color: #666;
+    }
+
+    .no-events i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .no-events h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .events-hero {
+            padding: 60px 0;
+        }
+        
+        .events-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .events-hero p {
+            font-size: 1.1rem;
+            padding: 0 20px;
+        }
+        
+        .events-filters {
+            padding: 30px 0;
+        }
+        
+        .filter-section {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+            padding: 0 20px;
+        }
+        
+        .filter-group {
+            min-width: auto;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            min-width: auto;
+            font-size: 16px; /* Évite le zoom sur iOS */
+        }
+        
+        .events-grid {
+            padding: 40px 0;
+        }
+        
+        .event-card {
+            margin-bottom: 20px;
+        }
+        
+        .event-content {
+            padding: 20px;
+        }
+        
+        .event-meta {
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .event-actions {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn-event {
+            min-width: auto;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+        }
+        
+        .section-title {
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+        }
+        
+        .event-title {
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+        
+        .event-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .events-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .events-hero p {
+            font-size: 1rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .event-title {
+            font-size: 1.3rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+        
+        .event-content {
+            padding: 15px;
+        }
+        
+        .event-meta {
+            font-size: 0.85rem;
+        }
+        
+        .btn-event {
+            padding: 10px 16px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="events-hero">
+    <div class="events-hero-background">
+        <img src="{% get_hero_image_url 'events' %}" alt="Événements culinaires" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#999; font-size:3rem;\'>📅</div>'">
+        <div class="events-hero-overlay"></div>
+    </div>
+    <div class="container">
+        <h1>Nos Événements</h1>
+        <p>Découvrez nos événements culinaires exceptionnels, des dégustations privées aux soirées thématiques</p>
+    </div>
+</section>
+
+<!-- Filters Section -->
+<section class="events-filters">
+    <div class="container">
+        <form method="GET" action="{% url 'restaurant:events' %}" class="filter-section">
+            <div class="filter-group">
+                <label for="category-filter">Catégorie</label>
+                <select id="category-filter" name="category">
+                    <option value="">Toutes les catégories</option>
+                    {% for value, label in categories %}
+                    <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="date-filter">Date</label>
+                <input type="date" id="date-filter" name="date" value="{{ selected_date|default:'' }}">
+            </div>
+            <div class="filter-group">
+                <label for="search-filter">Rechercher</label>
+                <input type="text" id="search-filter" name="search" placeholder="Rechercher un événement..." value="{{ search_query|default:'' }}">
+            </div>
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn-event btn-primary-event">Filtrer</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Events Grid -->
+<section class="events-grid">
+    <div class="container">
+        <div class="section-title">
+            <h2>Événements à venir</h2>
+            <p>Rejoignez-nous pour des expériences culinaires uniques et mémorables</p>
+        </div>
+
+        <div class="row" id="events-container">
+            {% for event in events %}
+            <div class="col-lg-4 col-md-6 event-item" 
+                 data-category="{{ event.category|default:'general' }}" 
+                 data-date="{{ event.date|date:'Y-m-d' }}"
+                 data-title="{{ event.title|lower }}">
+                <div class="event-card">
+                    <div class="event-image image-card">
+                        <img src="{{ event|get_image_url:'events' }}" alt="{{ event.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#999; font-size:3rem;\'>📅</div>'">
+                        <div class="event-date-badge">
+                            {{ event.date|date:"d M" }}
+                        </div>
+                        {% if event.is_featured %}
+                        <div class="event-featured-badge">
+                            <i class="fas fa-star"></i> Événement spécial
+                        </div>
+                        {% endif %}
+                        {% if event.is_full %}
+                        <div class="event-full-badge">
+                            <i class="fas fa-times-circle"></i> Complet
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">{{ event.title }}</h3>
+                        <div class="event-meta">
+                            <span><i class="fas fa-clock"></i> {{ event.time|time:"H:i" }}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> {{ event.location|default:"Notre restaurant" }}</span>
+                        </div>
+                        <p class="event-description">{{ event.description|truncatewords:20 }}</p>
+                        
+                        <!-- Informations sur la capacité -->
+                        {% if event.max_capacity %}
+                        <div class="event-capacity">
+                            <div class="capacity-bar">
+                                <div class="capacity-fill" style="width: {{ event.booking_percentage }}%"></div>
+                            </div>
+                            <span class="capacity-text">{{ event.available_spots }} places disponibles</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Prix -->
+                        {% if event.price %}
+                        <div class="event-price">
+                            <span class="price-amount">{{ event.price }} €</span>
+                            <span class="price-label">par personne</span>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="event-actions">
+                            <a href="{% url 'restaurant:event_detail' event.id %}" class="btn-event btn-primary-event">
+                                <i class="fas fa-info-circle"></i> Voir détails
+                            </a>
+                            {% if not event.is_full %}
+                            <a href="#" class="btn-event btn-secondary-event" onclick="bookEvent({{ event.id }})">
+                                <i class="fas fa-calendar-plus"></i> Réserver
+                            </a>
+                            {% else %}
+                            <button class="btn-event btn-disabled" disabled>
+                                <i class="fas fa-times"></i> Complet
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="no-events">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Aucun événement pour le moment</h3>
+                    <p>Revenez bientôt pour découvrir nos prochains événements !</p>
+                    <a href="{% url 'restaurant:contact' %}" class="btn-event btn-primary-event">
+                        <i class="fas fa-envelope"></i> Nous contacter
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Images d'événements supplémentaires -->
+        <div class="image-grid image-grid-4" style="margin-top: 40px;">
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Événement culinaire">
+                <div class="image-badge">Populaire</div>
+                <div class="image-overlay">
+                    <h3>Dégustation Culinaire</h3>
+                    <p>Découvrez nos plats signature</p>
+                </div>
+            </div>
+            <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Soirée spéciale">
+                <div class="image-overlay">
+                    <h3>Soirée Spéciale</h3>
+                    <p>Ambiance festive et conviviale</p>
+                </div>
+            </div>
+            <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cours de cuisine">
+                <div class="image-overlay">
+                    <h3>Cours de Cuisine</h3>
+                    <p>Apprenez avec nos chefs</p>
+                </div>
+            </div>
+            <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Dîner privé">
+                <div class="image-overlay">
+                    <h3>Dîner Privé</h3>
+                    <p>Expérience exclusive</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="events-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">{{ events.count }}</div>
+                <div class="stat-label">Événements organisés</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Participants satisfaits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Années d'expérience</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Events Preview -->
+<section class="upcoming-events">
+    <div class="container">
+        <div class="section-title">
+            <h2>Prochains événements</h2>
+            <p>Ne manquez pas nos événements spéciaux à venir</p>
+        </div>
+        
+        <div class="row">
+            {% for event in upcoming_events %}
+            <div class="col-md-4">
+                <div class="event-card">
+                    <div class="event-image">
+                        <img src="{{ event|get_image_url:'events' }}" alt="{{ event.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#999; font-size:3rem;\'>📅</div>'">
+                        <div class="event-date-badge">
+                            {{ event.date|date:"d M" }}
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">{{ event.title }}</h3>
+                        <div class="event-meta">
+                            <span><i class="fas fa-clock"></i> {{ event.time|time:"H:i" }}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+                        </div>
+                        <p class="event-description">{{ event.description|truncatewords:15 }}</p>
+                                                 <div class="event-actions">
+                             <a href="#" class="btn-event btn-primary-event">Voir détails</a>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit form when filters change
+    const filterForm = document.querySelector('.filter-section');
+    const categoryFilter = document.getElementById('category-filter');
+    const dateFilter = document.getElementById('date-filter');
+    const searchFilter = document.getElementById('search-filter');
+    
+    categoryFilter.addEventListener('change', function() {
+        filterForm.submit();
+    });
+    
+    dateFilter.addEventListener('change', function() {
+        filterForm.submit();
+    });
+    
+    // Recherche en temps réel
+    let searchTimeout;
+    searchFilter.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterForm.submit();
+        }, 500);
+    });
+    
+    // Animation des cartes d'événements
+    const eventCards = document.querySelectorAll('.event-card');
+    eventCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('animate-in');
+    });
+    
+    // Filtrage côté client pour une meilleure UX
+    setupClientSideFiltering();
+});
+
+function setupClientSideFiltering() {
+    const categoryFilter = document.getElementById('category-filter');
+    const dateFilter = document.getElementById('date-filter');
+    const searchFilter = document.getElementById('search-filter');
+    const eventItems = document.querySelectorAll('.event-item');
+    
+    function filterEvents() {
+        const selectedCategory = categoryFilter.value;
+        const selectedDate = dateFilter.value;
+        const searchQuery = searchFilter.value.toLowerCase();
+        
+        eventItems.forEach(item => {
+            const category = item.dataset.category;
+            const date = item.dataset.date;
+            const title = item.dataset.title;
+            
+            let show = true;
+            
+            // Filtre par catégorie
+            if (selectedCategory && category !== selectedCategory) {
+                show = false;
+            }
+            
+            // Filtre par date
+            if (selectedDate && date !== selectedDate) {
+                show = false;
+            }
+            
+            // Filtre par recherche
+            if (searchQuery && !title.includes(searchQuery)) {
+                show = false;
+            }
+            
+            if (show) {
+                item.style.display = 'block';
+                item.style.animation = 'fadeIn 0.5s ease-in-out';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    // Écouteurs d'événements pour le filtrage côté client
+    categoryFilter.addEventListener('change', filterEvents);
+    dateFilter.addEventListener('change', filterEvents);
+    searchFilter.addEventListener('input', filterEvents);
+}
+
+function bookEvent(eventId) {
+    // Redirection vers la page de réservation
+    window.location.href = `/contact/?event=${eventId}`;
+}
+
+// Animation CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-in {
+        animation: fadeIn 0.6s ease-out forwards;
+        opacity: 0;
+    }
+    
+    .event-card {
+        transition: all 0.3s ease;
+    }
+    
+    .event-card:hover .event-image {
+        transform: scale(1.05);
+    }
+    
+    .event-image {
+        transition: transform 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

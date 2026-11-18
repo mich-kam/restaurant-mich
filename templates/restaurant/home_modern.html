@@ -1,0 +1,792 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+{% load image_tags %}
+
+{% block title %}{{ settings.site_name }} - Accueil{% endblock %}
+
+{% block content %}
+<!-- Hero Section Moderne -->
+<section class="hero-section-modern">
+    <div class="hero-background">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="container">
+        <div class="hero-content-modern">
+            <h1 class="hero-title-modern">
+                {{ settings.site_name|default:"Bites Restaurant" }}
+            </h1>
+            <p class="hero-subtitle-modern">
+                {{ settings.site_description|default:"Découvrez une expérience culinaire exceptionnelle avec nos plats préparés par des chefs passionnés." }}
+            </p>
+            <div class="hero-buttons-modern content-btn-group content-btn-group-center">
+                <a href="{% url 'restaurant:menu' %}" class="content-btn content-btn-primary content-btn-lg">
+                    <i class="fas fa-utensils"></i>
+                    Voir le Menu
+                </a>
+                <a href="{% url 'restaurant:contact' %}" class="content-btn content-btn-outline content-btn-lg">
+                    <i class="fas fa-calendar-alt"></i>
+                    Réserver une Table
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Services -->
+<section class="services-section-modern">
+    <div class="container">
+        <div class="section-header-modern">
+            <h2 class="section-title-modern">Nos Services</h2>
+            <p class="section-subtitle-modern">Une expérience culinaire complète pour tous vos besoins</p>
+        </div>
+        
+        <div class="modern-grid">
+            <div class="modern-card service-card">
+                <div class="service-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Restaurant</h3>
+                <p>Profitez d'une ambiance chaleureuse et de plats exceptionnels dans notre restaurant.</p>
+            </div>
+            
+            <div class="modern-card service-card">
+                <div class="service-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h3>Livraison</h3>
+                <p>Commandez en ligne et faites-vous livrer à domicile ou au bureau.</p>
+            </div>
+            
+            <div class="modern-card service-card">
+                <div class="service-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Événements</h3>
+                <p>Organisez vos événements privés et célébrations dans un cadre unique.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Plats Populaires -->
+<section class="popular-dishes-section">
+    <div class="container">
+        <div class="section-header-modern">
+            <h2 class="section-title-modern">Nos Plats Populaires</h2>
+            <p class="section-subtitle-modern">Découvrez nos plats les plus appréciés par nos clients</p>
+        </div>
+        
+        <div class="dishes-grid">
+            {% for dish in popular_dishes|slice:":6" %}
+            <div class="dish-card-modern">
+                <div class="dish-image-modern">
+                    <img src="{{ dish|get_image_url:'dishes' }}" alt="{{ dish.name }}">
+                </div>
+                <div class="dish-content-modern">
+                    <h3>{{ dish.name }}</h3>
+                    <p>{{ dish.description|truncatewords:15 }}</p>
+                    <div class="dish-footer card-btn-container">
+                        <span class="dish-price">{{ dish.price }}€</span>
+                        <button class="action-btn" onclick="addToCart({{ dish.id }})">
+                            <i class="fas fa-plus"></i> Ajouter
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-dishes">
+                <i class="fas fa-utensils"></i>
+                <h3>Aucun plat disponible</h3>
+                <p>Nos chefs préparent de délicieux plats pour vous.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'restaurant:menu' %}" class="content-btn content-btn-outline content-btn-lg">
+                Voir Tout le Menu
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Section Événements -->
+<section class="events-section-modern">
+    <div class="container">
+        <div class="section-header-modern">
+            <h2 class="section-title-modern">Événements à Venir</h2>
+            <p class="section-subtitle-modern">Participez à nos événements spéciaux et dégustations</p>
+        </div>
+        
+        <div class="events-grid">
+            {% for event in upcoming_events|slice:":3" %}
+            <div class="event-card-modern">
+                <div class="event-image-modern">
+                    <img src="{{ event|get_image_url:'events' }}" alt="{{ event.title }}">
+                    <div class="event-date-badge">
+                        {{ event.date|date:"d M" }}
+                    </div>
+                </div>
+                <div class="event-content-modern">
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.description|truncatewords:20 }}</p>
+                    <div class="event-footer card-btn-container">
+                        <span class="event-time">
+                            <i class="fas fa-clock"></i>
+                            {{ event.date|date:"d/m/Y" }}
+                        </span>
+                        <a href="{% url 'restaurant:event_detail' event.id %}" class="action-btn">
+                            En savoir plus
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-events">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Aucun événement prévu</h3>
+                <p>Revenez bientôt pour découvrir nos prochains événements.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Section À Propos -->
+<section class="about-section-modern">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Notre Histoire</h2>
+                <p>{{ settings.about_text|default:"Depuis plus de 20 ans, notre restaurant s'engage à offrir une expérience culinaire exceptionnelle. Nos chefs passionnés créent des plats uniques en utilisant les meilleurs ingrédients locaux et des techniques culinaires traditionnelles." }}</p>
+                <div class="about-stats">
+                    <div class="stat">
+                        <span class="stat-number">20+</span>
+                        <span class="stat-label">Années d'expérience</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">Clients satisfaits</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Plats uniques</span>
+                    </div>
+                </div>
+                <a href="{% url 'restaurant:about' %}" class="content-btn content-btn-primary content-btn-lg">
+                    En savoir plus
+                </a>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop" alt="Notre restaurant">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Newsletter -->
+<section class="newsletter-section-modern">
+    <div class="container">
+        <div class="newsletter-content">
+            <h2>Restez Informé</h2>
+            <p>Inscrivez-vous à notre newsletter pour recevoir nos dernières offres et événements</p>
+            <form class="newsletter-form" id="newsletter-form">
+                {% csrf_token %}
+                <div class="form-group-modern">
+                    <input type="email" name="email" placeholder="Votre adresse email" required class="form-input-modern">
+                    <button type="submit" class="form-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        S'inscrire
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Hero Section Moderne */
+.hero-section-modern {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+    padding-top: clamp(6rem, 12vh, 8rem);
+    padding-bottom: 4rem;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=2000&h=1200&fit=crop') center/cover;
+    z-index: -2;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(255,107,53,0.3));
+    z-index: -1;
+}
+
+.hero-content-modern {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hero-title-modern {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle-modern {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.content-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.content-btn-group-center {
+    justify-content: center;
+}
+
+.content-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    border: 1px solid transparent;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.content-btn:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.content-btn-primary {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: #fff;
+    box-shadow: 0 12px 24px rgba(255, 107, 53, 0.3);
+}
+
+.content-btn-primary:hover {
+    color: #fff;
+    box-shadow: 0 18px 30px rgba(255, 107, 53, 0.4);
+}
+
+.content-btn-outline {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #fff;
+    backdrop-filter: blur(4px);
+}
+
+.content-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.content-btn-lg {
+    min-height: 54px;
+    padding-inline: 1.6rem;
+    font-size: 1rem;
+}
+
+.hero-buttons-modern {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.section-header-modern {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+}
+
+.section-title-modern {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    margin: 0 0 0.75rem;
+    color: var(--text-color);
+    letter-spacing: -0.04em;
+}
+
+.section-subtitle-modern {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.modern-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.75rem;
+}
+
+.modern-card,
+.dish-card-modern,
+.event-card-modern {
+    position: relative;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.06);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.modern-card:hover,
+.dish-card-modern:hover,
+.event-card-modern:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.12);
+    border-color: rgba(255, 107, 53, 0.25);
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: #fff;
+    padding: 0.7rem 1.1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 12px 20px rgba(255, 107, 53, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 28px rgba(255, 107, 53, 0.3);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Services Section */
+.services-section-modern {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(255,255,255,0.02) 100%);
+}
+
+.service-card {
+    text-align: center;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2rem;
+}
+
+.service-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.service-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Plats Populaires */
+.popular-dishes-section {
+    padding: 5rem 0;
+    
+    background: var(--bg-color);
+}
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.dish-card-modern {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.dish-card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.dish-image-modern {
+    height: 200px;
+    overflow: hidden;
+}
+
+.dish-image-modern img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-normal);
+}
+
+.dish-card-modern:hover .dish-image-modern img {
+    transform: scale(1.1);
+}
+
+.dish-content-modern {
+    padding: 1.5rem;
+}
+
+.dish-content-modern h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.dish-content-modern p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dish-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Événements */
+.events-section-modern {
+    padding: 5rem 0;
+    background: var(--bg-secondary);
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.event-card-modern {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.event-card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.event-image-modern {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-image-modern img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-date-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+
+.event-content-modern {
+    padding: 1.5rem;
+}
+
+.event-content-modern h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.event-content-modern p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-time {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* À Propos */
+.about-section-modern {
+    padding: 5rem 0;
+    background: var(--bg-color);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.about-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+}
+
+/* Newsletter */
+.newsletter-section-modern {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    text-align: center;
+}
+
+.newsletter-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.newsletter-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.newsletter-form .form-group-modern {
+    display: flex;
+    gap: 1rem;
+}
+
+.newsletter-form .form-input-modern {
+    flex: 1;
+    border: none;
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section-modern {
+        min-height: 78vh;
+        padding-top: 6rem;
+    }
+
+    .hero-content-modern {
+        padding: 1rem 0.75rem;
+    }
+
+    .modern-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-buttons-modern {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content-btn-group {
+        width: 100%;
+    }
+
+    .content-btn,
+    .hero-buttons-modern .content-btn {
+        width: min(100%, 280px);
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .newsletter-form .form-group-modern {
+        flex-direction: column;
+    }
+    
+    .dishes-grid,
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mode sombre */
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .dish-card-modern,
+[data-theme="dark"] .event-card-modern {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+}
+
+[data-theme="dark"] .about-section-modern {
+    background: var(--bg-color);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Fonction pour ajouter au panier
+function addToCart(dishId) {
+    fetch('{% url "restaurant:add_to_cart" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: `dish_id=${dishId}&quantity=1`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Plat ajouté au panier !', 'success');
+            updateCartCount(data.cart_count);
+        } else {
+            showNotification('Erreur lors de l\'ajout au panier', 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Erreur de connexion', 'error');
+    });
+}
+
+// Newsletter
+document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('{% url "restaurant:newsletter_subscribe" %}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Inscription réussie !', 'success');
+            this.reset();
+        } else {
+            showNotification(data.message || 'Erreur lors de l\'inscription', 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Erreur de connexion', 'error');
+    });
+});
+</script>
+{% endblock %}

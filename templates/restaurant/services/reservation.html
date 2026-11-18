@@ -1,0 +1,105 @@
+{% extends 'restaurant/services/base_service.html' %}
+
+{% block service_content %}
+<div class="service-grid">
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <h3>Réservation en Ligne</h3>
+        <p>Réservez votre table en quelques clics. Système simple et rapide avec confirmation instantanée.</p>
+        <ul class="service-features">
+            <li>Réservation 24h/24</li>
+            <li>Confirmation instantanée</li>
+            <li>Choix de l'heure</li>
+            <li>Nombre de personnes</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-phone"></i>
+        </div>
+        <h3>Réservation par Téléphone</h3>
+        <p>Appelez-nous directement pour réserver votre table. Notre équipe vous accueille avec plaisir.</p>
+        <ul class="service-features">
+            <li>Service personnalisé</li>
+            <li>Conseils personnalisés</li>
+            <li>Demandes spéciales</li>
+            <li>Confirmation vocale</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>Groupes et Événements</h3>
+        <p>Réservation pour groupes et événements spéciaux. Nous adaptons nos services à vos besoins.</p>
+        <ul class="service-features">
+            <li>Groupes de 8+ personnes</li>
+            <li>Menus de groupe</li>
+            <li>Espace privatif</li>
+            <li>Service dédié</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <h3>Tables Romantiques</h3>
+        <p>Réservation de tables romantiques pour vos moments spéciaux. Ambiance intimiste et service attentionné.</p>
+        <ul class="service-features">
+            <li>Tables en coin</li>
+            <li>Décoration spéciale</li>
+            <li>Menus romantiques</li>
+            <li>Service discret</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-wheelchair"></i>
+        </div>
+        <h3>Accessibilité</h3>
+        <p>Notre restaurant est entièrement accessible. Nous adaptons nos services à tous nos clients.</p>
+        <ul class="service-features">
+            <li>Accès handicapé</li>
+            <li>Tables adaptées</li>
+            <li>Menus adaptés</li>
+            <li>Service attentionné</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h3>Réservation Premium</h3>
+        <p>Service de réservation premium avec accès prioritaire et services exclusifs.</p>
+        <ul class="service-features">
+            <li>Accès prioritaire</li>
+            <li>Tables premium</li>
+            <li>Service exclusif</li>
+            <li>Conciergerie</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Section Contact -->
+<div style="text-align: center; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #1a1a1a; margin-bottom: 1rem;">Réservez votre table maintenant !</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Choisissez votre méthode de réservation préférée et préparez-vous à vivre une expérience gastronomique unique.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{% url 'restaurant:contact' %}" class="service-cta">
+            <i class="fas fa-calendar-alt"></i>
+            Réserver en ligne
+        </a>
+        <a href="tel:+33123456789" class="service-cta" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <i class="fas fa-phone"></i>
+            Appeler
+        </a>
+    </div>
+</div>
+{% endblock %}

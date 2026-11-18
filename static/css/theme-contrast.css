@@ -1,0 +1,539 @@
+:root {
+    --theme-accent-text: #b83d11;
+    --theme-success-text: #176b35;
+}
+
+[data-theme="dark"] {
+    --theme-accent-text: #ff9b73;
+    --theme-success-text: #86efac;
+}
+
+.loyalty-cta,
+.hours-cta {
+    margin-top: 4rem;
+    padding: 3rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.loyalty-levels-title {
+    margin: 4rem 0 2rem;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.legal-page-section {
+    min-height: 60vh;
+    padding: 8rem 0 4rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.legal-page-card {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+}
+
+.legal-page-card h1,
+.legal-page-card p,
+.legal-page-card strong {
+    color: var(--text-color);
+}
+
+.legal-page-card a:not(.content-btn) {
+    color: var(--theme-accent-text);
+}
+
+.loyalty-cta h2,
+.hours-cta h2 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.loyalty-cta p,
+.hours-cta p {
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+}
+
+.detail-status {
+    color: var(--theme-success-text);
+    font-weight: 600;
+}
+
+html[data-theme="light"] .category-btn,
+html[data-theme="dark"] .category-btn,
+html[data-theme="light"] .btn-event.btn-secondary-event,
+html[data-theme="dark"] .btn-event.btn-secondary-event,
+html[data-theme="light"] .btn-secondary-success,
+html[data-theme="dark"] .btn-secondary-success {
+    color: var(--theme-accent-text);
+}
+
+html[data-theme="light"] .category-btn,
+html[data-theme="dark"] .category-btn,
+html[data-theme="light"] .btn-event.btn-secondary-event,
+html[data-theme="dark"] .btn-event.btn-secondary-event {
+    border-color: var(--theme-accent-text);
+}
+
+html[data-theme="light"] .category-btn:hover,
+html[data-theme="light"] .category-btn.active,
+html[data-theme="dark"] .category-btn:hover,
+html[data-theme="dark"] .category-btn.active,
+html[data-theme="light"] .btn-secondary-success:hover,
+html[data-theme="dark"] .btn-secondary-success:hover {
+    background: #c74616;
+    color: #ffffff;
+}
+
+html[data-theme="dark"] .hero-section-modern {
+    isolation: isolate;
+    background-color: #1a202c;
+}
+
+.hero-section-modern {
+    isolation: isolate;
+    background-color: #1a202c;
+}
+
+.hero-section-modern .hero-title-modern,
+.hero-section-modern .hero-subtitle-modern {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+.hero-section-modern .hero-background {
+    background-color: #1a202c;
+    background-image:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.4), rgba(30, 41, 59, 0.72)),
+        url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=2000&h=1200&fit=crop");
+}
+
+html[data-theme="light"] .header .btn-secondary,
+html[data-theme="light"] .btn-secondary,
+html[data-theme="light"] .position,
+html[data-theme="light"] .hours-time,
+html[data-theme="light"] .dish-price,
+html[data-theme="light"] .read-more,
+html[data-theme="light"] .level-points,
+html[data-theme="light"] .help-link,
+html[data-theme="light"] .register-link {
+    color: var(--theme-accent-text);
+}
+
+html[data-theme="dark"] .header .btn-secondary,
+html[data-theme="dark"] .btn-secondary,
+html[data-theme="dark"] .position,
+html[data-theme="dark"] .hours-time,
+html[data-theme="dark"] .dish-price,
+html[data-theme="dark"] .read-more,
+html[data-theme="dark"] .level-points,
+html[data-theme="dark"] .help-link,
+html[data-theme="dark"] .register-link {
+    color: var(--theme-accent-text);
+}
+
+html[data-theme="dark"] .bg-light {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .text-dark {
+    color: var(--text-color) !important;
+}
+
+html[data-theme="dark"] .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select {
+    background-color: var(--input-bg, var(--card-bg));
+    border-color: var(--input-border, var(--card-border));
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .form-control::placeholder,
+html[data-theme="dark"] .form-select::placeholder {
+    color: var(--text-secondary);
+    opacity: 1;
+}
+
+html[data-theme="dark"] .about-section,
+html[data-theme="dark"] .gallery-section,
+html[data-theme="dark"] .gallery-categories,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .success-section,
+html[data-theme="dark"] .services-section,
+html[data-theme="dark"] .service-item,
+html[data-theme="dark"] .chefs-section,
+html[data-theme="dark"] .chef-card,
+html[data-theme="dark"] .blog-section,
+html[data-theme="dark"] .blog-card,
+html[data-theme="dark"] .no-posts,
+html[data-theme="dark"] .cart-section,
+html[data-theme="dark"] .cart-items,
+html[data-theme="dark"] .cart-summary,
+html[data-theme="dark"] .empty-cart,
+html[data-theme="dark"] .delivery-zones,
+html[data-theme="dark"] .zone-card,
+html[data-theme="dark"] .delivery-form,
+html[data-theme="dark"] .dish-card,
+html[data-theme="dark"] .hours-content,
+html[data-theme="dark"] .hours-card,
+html[data-theme="dark"] .contact-card,
+html[data-theme="dark"] .loyalty-content,
+html[data-theme="dark"] .loyalty-card,
+html[data-theme="dark"] .level-card,
+html[data-theme="dark"] .faq-content,
+html[data-theme="dark"] .faq-item,
+html[data-theme="dark"] .faq-answer,
+html[data-theme="dark"] .payment-container,
+html[data-theme="dark"] .payment-card,
+html[data-theme="dark"] .payment-method,
+html[data-theme="dark"] .payment-form,
+html[data-theme="dark"] .payment-summary,
+html[data-theme="dark"] .cancel-container,
+html[data-theme="dark"] .cancel-card,
+html[data-theme="dark"] .cancel-message,
+html[data-theme="dark"] .success-container,
+html[data-theme="dark"] .success-card,
+html[data-theme="dark"] .success-content,
+html[data-theme="dark"] .success-section,
+html[data-theme="dark"] .order-details,
+html[data-theme="dark"] .event-capacity-section,
+html[data-theme="dark"] .menu-section,
+html[data-theme="dark"] .service-content {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .about-section,
+html[data-theme="dark"] .blog-section,
+html[data-theme="dark"] .cart-section,
+html[data-theme="dark"] .delivery-zones,
+html[data-theme="dark"] .hours-content,
+html[data-theme="dark"] .loyalty-content,
+html[data-theme="dark"] .faq-content,
+html[data-theme="dark"] .payment-container,
+html[data-theme="dark"] .cancel-container,
+html[data-theme="dark"] .success-container,
+html[data-theme="dark"] .menu-section,
+html[data-theme="dark"] .upcoming-events,
+html[data-theme="dark"] .service-content {
+    background: var(--bg-color);
+}
+
+html[data-theme="dark"] .service-item h4,
+html[data-theme="dark"] .service-item p,
+html[data-theme="dark"] .chef-info h4,
+html[data-theme="dark"] .experience,
+html[data-theme="dark"] .bio,
+html[data-theme="dark"] .specialties,
+html[data-theme="dark"] .blog-meta,
+html[data-theme="dark"] .section-subtitle,
+html[data-theme="dark"] .blog-title a,
+html[data-theme="dark"] .blog-excerpt,
+html[data-theme="dark"] .no-posts h3,
+html[data-theme="dark"] .no-posts p,
+html[data-theme="dark"] .item-details h3,
+html[data-theme="dark"] .item-description,
+html[data-theme="dark"] .cart-summary h3,
+html[data-theme="dark"] .empty-cart h3,
+html[data-theme="dark"] .empty-cart p,
+html[data-theme="dark"] .zone-name,
+html[data-theme="dark"] .zone-details,
+html[data-theme="dark"] .form-label,
+html[data-theme="dark"] .dish-name,
+html[data-theme="dark"] .dish-description,
+html[data-theme="dark"] .hours-card h3,
+html[data-theme="dark"] .day-name,
+html[data-theme="dark"] .contact-card h4,
+html[data-theme="dark"] .contact-card p,
+html[data-theme="dark"] .loyalty-card h3,
+html[data-theme="dark"] .loyalty-card p,
+html[data-theme="dark"] .loyalty-benefits li,
+html[data-theme="dark"] .level-name,
+html[data-theme="dark"] .level-benefits li,
+html[data-theme="dark"] .faq-answer p,
+html[data-theme="dark"] .payment-method-title,
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .summary-title,
+html[data-theme="dark"] .summary-label,
+html[data-theme="dark"] .summary-value,
+html[data-theme="dark"] .payment-method-desc,
+html[data-theme="dark"] .detail-label,
+html[data-theme="dark"] .cancel-title,
+html[data-theme="dark"] .cancel-subtitle,
+html[data-theme="dark"] .cancel-message p,
+html[data-theme="dark"] .help-title,
+html[data-theme="dark"] .event-details-list span,
+html[data-theme="dark"] .capacity-text-large,
+html[data-theme="dark"] .dish-title,
+html[data-theme="dark"] .payment-title,
+html[data-theme="dark"] .payment-subtitle,
+html[data-theme="dark"] .summary-title,
+html[data-theme="dark"] .summary-label,
+html[data-theme="dark"] .summary-value,
+html[data-theme="dark"] .success-title,
+html[data-theme="dark"] .success-subtitle,
+html[data-theme="dark"] .success-message,
+html[data-theme="dark"] .success-note,
+html[data-theme="dark"] .success-note p {
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .success-section {
+    background: var(--bg-color);
+}
+
+html[data-theme="dark"] .success-content h2 {
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .success-content p {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .gallery-categories h3,
+html[data-theme="dark"] .stat-number,
+html[data-theme="dark"] .stat-label,
+html[data-theme="dark"] .order-details h3 {
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .section-subtitle {
+    color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .item-category,
+html[data-theme="dark"] .event-date-badge {
+    background-color: #b83d11;
+    color: #ffffff;
+}
+
+html[data-theme="dark"] .reservation-form input,
+html[data-theme="dark"] .reservation-form textarea,
+html[data-theme="dark"] .reservation-form select,
+html[data-theme="dark"] .form-input,
+html[data-theme="dark"] .payment-form .form-input,
+html[data-theme="dark"] .delivery-form .form-control {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .dish-content {
+    background: var(--card-bg);
+}
+
+html[data-theme="dark"] .dish-title,
+html[data-theme="dark"] .dish-price {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+}
+
+html[data-theme="dark"] .blog-date,
+html[data-theme="dark"] .blog-author,
+html[data-theme="dark"] .item-quantity,
+html[data-theme="dark"] .payment-method-desc,
+html[data-theme="dark"] .capacity-text,
+html[data-theme="dark"] .detail-label,
+html[data-theme="dark"] .detail-value,
+html[data-theme="dark"] .event-details-list .detail-value,
+html[data-theme="dark"] .closed {
+    color: var(--text-secondary);
+}
+
+html[data-theme="light"] .dish-price {
+    background: none;
+    color: var(--theme-accent-text);
+    -webkit-text-fill-color: currentColor;
+}
+
+html[data-theme="light"] .capacity-text,
+html[data-theme="light"] .payment-method-desc,
+html[data-theme="light"] .detail-label,
+html[data-theme="light"] .event-details-list .detail-value {
+    color: #4b5563;
+}
+
+html[data-theme="light"] .status-open,
+html[data-theme="light"] .detail-value,
+html[data-theme="light"] .success-content .detail-value {
+    color: var(--theme-success-text);
+}
+
+html[data-theme="dark"] .status-open,
+html[data-theme="dark"] .detail-value {
+    color: var(--theme-success-text);
+}
+
+html[data-theme="light"] .cancel-message h3 {
+    color: #a61b1b;
+}
+
+html[data-theme="dark"] .cancel-message h3 {
+    color: #ff8b94;
+}
+
+html[data-theme="dark"] .status-open {
+    background-color: rgba(34, 197, 94, 0.14);
+}
+
+html[data-theme="dark"] .closed {
+    color: #ff808a;
+}
+
+html[data-theme="dark"] .image-badge {
+    background: rgba(15, 23, 42, 0.86);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+html[data-theme="light"] .image-badge {
+    background: rgba(15, 23, 42, 0.86);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+html[data-theme="light"] .event-date-badge,
+html[data-theme="dark"] .event-date-badge {
+    background: #c74616;
+    color: #ffffff;
+}
+
+html[data-theme="light"] .event-date-badge,
+html[data-theme="dark"] .event-date-badge,
+html[data-theme="light"] .reserve-btn,
+html[data-theme="dark"] .reserve-btn,
+html[data-theme="light"] .content-btn-primary,
+html[data-theme="dark"] .content-btn-primary,
+html[data-theme="light"] .action-btn,
+html[data-theme="dark"] .action-btn,
+html[data-theme="light"] .btn-primary,
+html[data-theme="dark"] .btn-primary,
+html[data-theme="light"] .btn-delivery,
+html[data-theme="dark"] .btn-delivery,
+html[data-theme="light"] .service-cta,
+html[data-theme="dark"] .service-cta,
+html[data-theme="light"] .payment-button,
+html[data-theme="dark"] .payment-button,
+html[data-theme="light"] .checkout-btn,
+html[data-theme="dark"] .checkout-btn,
+html[data-theme="light"] .btn-primary-success,
+html[data-theme="dark"] .btn-primary-success,
+html[data-theme="light"] .action-btn.primary,
+html[data-theme="dark"] .action-btn.primary,
+html[data-theme="light"] .search-btn,
+html[data-theme="dark"] .search-btn,
+html[data-theme="light"] .add-to-cart-btn,
+html[data-theme="dark"] .add-to-cart-btn,
+html[data-theme="light"] .btn-event.btn-primary-event,
+html[data-theme="dark"] .btn-event.btn-primary-event,
+html[data-theme="light"] .btn-secondary-event:hover,
+html[data-theme="dark"] .btn-secondary-event:hover,
+html[data-theme="light"] .btn-secondary-success:hover,
+html[data-theme="dark"] .btn-secondary-success:hover,
+html[data-theme="light"] .category-btn.active,
+html[data-theme="dark"] .category-btn.active,
+html[data-theme="light"] .category-btn:hover,
+html[data-theme="dark"] .category-btn:hover {
+    background: linear-gradient(135deg, #c74616 0%, #b85b00 100%);
+    color: #ffffff;
+}
+
+html[data-theme="light"] .reserve-btn:hover,
+html[data-theme="dark"] .reserve-btn:hover,
+html[data-theme="light"] .content-btn-primary:hover,
+html[data-theme="dark"] .content-btn-primary:hover,
+html[data-theme="light"] .action-btn:hover,
+html[data-theme="dark"] .action-btn:hover,
+html[data-theme="light"] .btn-primary:hover,
+html[data-theme="dark"] .btn-primary:hover,
+html[data-theme="light"] .btn-delivery:hover,
+html[data-theme="dark"] .btn-delivery:hover,
+html[data-theme="light"] .service-cta:hover,
+html[data-theme="dark"] .service-cta:hover,
+html[data-theme="light"] .payment-button:hover,
+html[data-theme="dark"] .payment-button:hover,
+html[data-theme="light"] .checkout-btn:hover,
+html[data-theme="dark"] .checkout-btn:hover,
+html[data-theme="light"] .btn-primary-success:hover,
+html[data-theme="dark"] .btn-primary-success:hover,
+html[data-theme="light"] .action-btn.primary:hover,
+html[data-theme="dark"] .action-btn.primary:hover,
+html[data-theme="light"] .search-btn:hover,
+html[data-theme="dark"] .search-btn:hover,
+html[data-theme="light"] .add-to-cart-btn:hover,
+html[data-theme="dark"] .add-to-cart-btn:hover,
+html[data-theme="light"] .btn-event.btn-primary-event:hover,
+html[data-theme="dark"] .btn-event.btn-primary-event:hover,
+html[data-theme="light"] .btn-secondary-event:hover,
+html[data-theme="dark"] .btn-secondary-event:hover {
+    background: linear-gradient(135deg, #a83e12 0%, #984900 100%);
+    color: #ffffff;
+}
+
+html[data-theme="dark"] .checkout-container {
+    --checkout-text: var(--text-color);
+    --checkout-light: var(--text-secondary);
+    --checkout-border: var(--card-border);
+    --checkout-bg: var(--bg-secondary);
+    background: var(--bg-color);
+}
+
+html[data-theme="dark"] .checkout-header,
+html[data-theme="dark"] .checkout-main,
+html[data-theme="dark"] .checkout-sidebar,
+html[data-theme="dark"] .checkout-container .payment-method {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .checkout-container .form-input {
+    background: var(--bg-secondary);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .loyalty-content h2,
+html[data-theme="dark"] .loyalty-cta h2,
+html[data-theme="dark"] .loyalty-cta p,
+html[data-theme="dark"] .hours-cta h2,
+html[data-theme="dark"] .hours-cta p {
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .loyalty-cta,
+html[data-theme="dark"] .hours-cta {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}

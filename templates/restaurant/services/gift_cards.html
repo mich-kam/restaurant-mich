@@ -1,0 +1,99 @@
+{% extends 'restaurant/services/base_service.html' %}
+
+{% block service_content %}
+<div class="service-grid">
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-credit-card"></i>
+        </div>
+        <h3>Cartes Cadeaux Classiques</h3>
+        <p>Offrez une expérience gastronomique unique avec nos cartes cadeaux personnalisables. Montants flexibles de 25€ à 500€.</p>
+        <ul class="service-features">
+            <li>Montants personnalisables</li>
+            <li>Design élégant</li>
+            <li>Validité 1 an</li>
+            <li>Livraison gratuite</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-calendar-heart"></i>
+        </div>
+        <h3>Expériences Culinaires</h3>
+        <p>Cartes cadeaux pour des expériences uniques : cours de cuisine, dégustations, dîners privés et plus encore.</p>
+        <ul class="service-features">
+            <li>Cours de cuisine</li>
+            <li>Dégustations de vins</li>
+            <li>Dîners privés</li>
+            <li>Événements spéciaux</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>Cartes Entreprise</h3>
+        <p>Solutions cadeaux pour entreprises. Idéal pour récompenser vos collaborateurs ou remercier vos clients.</p>
+        <ul class="service-features">
+            <li>Montants élevés</li>
+            <li>Personnalisation logo</li>
+            <li>Facturation simplifiée</li>
+            <li>Service dédié</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-birthday-cake"></i>
+        </div>
+        <h3>Cartes Anniversaire</h3>
+        <p>Cartes cadeaux spécialement conçues pour les anniversaires avec des designs festifs et des montants adaptés.</p>
+        <ul class="service-features">
+            <li>Designs festifs</li>
+            <li>Messages personnalisés</li>
+            <li>Packaging cadeau</li>
+            <li>Livraison express</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <h3>Cartes Saint-Valentin</h3>
+        <p>Offrez une expérience romantique avec nos cartes Saint-Valentin. Dîners aux chandelles, dégustations en couple...</p>
+        <ul class="service-features">
+            <li>Designs romantiques</li>
+            <li>Expériences en couple</li>
+            <li>Dîners privés</li>
+            <li>Dégustations spéciales</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h3>Cartes Sur Mesure</h3>
+        <p>Créez une carte cadeau entièrement personnalisée selon vos besoins et l'occasion spéciale.</p>
+        <ul class="service-features">
+            <li>Design personnalisé</li>
+            <li>Message sur mesure</li>
+            <li>Montant flexible</li>
+            <li>Service premium</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Section Contact -->
+<div style="text-align: center; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #1a1a1a; margin-bottom: 1rem;">Offrez une expérience inoubliable !</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Commandez votre carte cadeau en ligne ou contactez-nous pour une personnalisation spéciale.</p>
+    <a href="{% url 'restaurant:contact' %}" class="service-cta">
+        <i class="fas fa-shopping-cart"></i>
+        Commander une carte
+    </a>
+</div>
+{% endblock %}

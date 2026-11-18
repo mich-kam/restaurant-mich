@@ -1,0 +1,573 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}Événements - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/events.css' %}">
+<style>
+    .events-hero {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{% static "images/events-bg.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+
+    .events-hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .events-hero p {
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0.9;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .events-filters {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 50px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .filter-section {
+        display: flex;
+        gap: 25px;
+        align-items: end;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 200px;
+    }
+
+    .filter-group label {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+        padding: 12px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+        outline: none;
+        border-color: #ff6b35;
+    }
+
+    .events-grid {
+        padding: 80px 0;
+    }
+
+    .event-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        position: relative;
+        border: 1px solid #f0f0f0;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .event-image {
+        height: 250px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        background-color: #f8f9fa;
+        background-image: linear-gradient(45deg, #f8f9fa 25%, transparent 25%), 
+                          linear-gradient(-45deg, #f8f9fa 25%, transparent 25%), 
+                          linear-gradient(45deg, transparent 75%, #f8f9fa 75%), 
+                          linear-gradient(-45deg, transparent 75%, #f8f9fa 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+    
+    .event-image::after {
+        content: '📅';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        opacity: 0.3;
+        z-index: 1;
+    }
+
+    .event-date-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #ff6b35;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        z-index: 2;
+    }
+
+    .event-content {
+        padding: 30px;
+    }
+
+    .event-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #333;
+        line-height: 1.3;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .event-meta {
+        display: flex;
+        gap: 25px;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+        color: #666;
+        flex-wrap: wrap;
+    }
+
+    .event-meta i {
+        color: #ff6b35;
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .event-description {
+        color: #666;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        font-size: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .event-actions {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-event {
+        padding: 12px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95rem;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .btn-primary-event {
+        background: #ff6b35;
+        color: white;
+    }
+
+    .btn-primary-event:hover {
+        background: #e55a2b;
+        color: white;
+    }
+
+    .btn-secondary-event {
+        background: transparent;
+        color: #ff6b35;
+        border: 2px solid #ff6b35;
+    }
+
+    .btn-secondary-event:hover {
+        background: #ff6b35;
+        color: white;
+    }
+
+    .events-stats {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .section-title p {
+        color: #666;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .no-events {
+        text-align: center;
+        padding: 60px 0;
+        color: #666;
+    }
+
+    .no-events i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .no-events h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .events-hero {
+            padding: 60px 0;
+        }
+        
+        .events-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            padding: 0 20px;
+        }
+        
+        .events-hero p {
+            font-size: 1.1rem;
+            padding: 0 20px;
+        }
+        
+        .events-filters {
+            padding: 30px 0;
+        }
+        
+        .filter-section {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+            padding: 0 20px;
+        }
+        
+        .filter-group {
+            min-width: auto;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            min-width: auto;
+            font-size: 16px; /* Évite le zoom sur iOS */
+        }
+        
+        .events-grid {
+            padding: 40px 0;
+        }
+        
+        .event-card {
+            margin-bottom: 20px;
+        }
+        
+        .event-content {
+            padding: 20px;
+        }
+        
+        .event-meta {
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .event-actions {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn-event {
+            min-width: auto;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+        }
+        
+        .section-title {
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+        }
+        
+        .event-title {
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+        
+        .event-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .events-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .events-hero p {
+            font-size: 1rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .event-title {
+            font-size: 1.3rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+        
+        .event-content {
+            padding: 15px;
+        }
+        
+        .event-meta {
+            font-size: 0.85rem;
+        }
+        
+        .btn-event {
+            padding: 10px 16px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="events-hero">
+    <div class="container">
+        <h1>Nos Événements</h1>
+        <p>Découvrez nos événements culinaires exceptionnels, des dégustations privées aux soirées thématiques</p>
+    </div>
+</section>
+
+<!-- Filters Section -->
+<section class="events-filters">
+    <div class="container">
+        <form method="GET" action="{% url 'restaurant:events' %}" class="filter-section">
+            <div class="filter-group">
+                <label for="category-filter">Catégorie</label>
+                <select id="category-filter" name="category">
+                    <option value="">Toutes les catégories</option>
+                    {% for value, label in categories %}
+                    <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="date-filter">Date</label>
+                <input type="date" id="date-filter" name="date" value="{{ selected_date|default:'' }}">
+            </div>
+            <div class="filter-group">
+                <label for="search-filter">Rechercher</label>
+                <input type="text" id="search-filter" name="search" placeholder="Rechercher un événement..." value="{{ search_query|default:'' }}">
+            </div>
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn-event btn-primary-event">Filtrer</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Events Grid -->
+<section class="events-grid">
+    <div class="container">
+        <div class="section-title">
+            <h2>Événements à venir</h2>
+            <p>Rejoignez-nous pour des expériences culinaires uniques et mémorables</p>
+        </div>
+
+        <div class="row" id="events-container">
+            {% for event in events %}
+            <div class="col-lg-4 col-md-6 event-item" 
+                 data-category="{{ event.category|default:'general' }}" 
+                 data-date="{{ event.date|date:'Y-m-d' }}"
+                 data-title="{{ event.title|lower }}">
+                <div class="event-card">
+                                                             <div class="event-image">
+                        <img src="{{ event|get_image_url:'events' }}" alt="{{ event.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#999; font-size:3rem;\'>📅</div>'">
+                        <div class="event-date-badge">
+                            {{ event.date|date:"d M" }}
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">{{ event.title }}</h3>
+                        <div class="event-meta">
+                            <span><i class="fas fa-clock"></i> {{ event.time|time:"H:i" }}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> {{ event.location|default:"Notre restaurant" }}</span>
+                        </div>
+                        <p class="event-description">{{ event.description|truncatewords:20 }}</p>
+                        <div class="event-actions">
+                            <a href="{% url 'restaurant:event_detail' event.id %}" class="btn-event btn-primary-event">Voir détails</a>
+                            {% if not event.is_full %}
+                            <a href="#" class="btn-event btn-secondary-event">Réserver</a>
+                            {% else %}
+                            <span class="btn-event btn-secondary-event" style="opacity: 0.6; cursor: not-allowed;">Complet</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="no-events">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Aucun événement pour le moment</h3>
+                    <p>Revenez bientôt pour découvrir nos prochains événements !</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="events-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">{{ events.count }}</div>
+                <div class="stat-label">Événements organisés</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Participants satisfaits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Années d'expérience</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit form when filters change
+    const filterForm = document.querySelector('.filter-section');
+    const categoryFilter = document.getElementById('category-filter');
+    const dateFilter = document.getElementById('date-filter');
+    
+    categoryFilter.addEventListener('change', function() {
+        filterForm.submit();
+    });
+    
+    dateFilter.addEventListener('change', function() {
+        filterForm.submit();
+    });
+});
+</script>
+{% endblock %}

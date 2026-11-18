@@ -1,0 +1,656 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}Gestion des commandes - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== ORDER MANAGEMENT MODERNE ===== */
+
+:root {
+    --order-primary: #ff6b35;
+    --order-secondary: #764ba2;
+    --order-success: #48bb78;
+    --order-warning: #ed8936;
+    --order-error: #f56565;
+    --order-info: #4299e1;
+    --order-text: #2d3748;
+    --order-light: #718096;
+    --order-border: #e2e8f0;
+    --order-bg: #f7fafc;
+    --order-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --order-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.order-management-container {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.order-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--order-shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--order-text);
+    margin: 0;
+}
+
+.header-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    background: var(--order-bg);
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--order-border);
+    min-width: 120px;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--order-primary);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: var(--order-light);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.order-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--order-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filters {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    position: relative;
+}
+
+.filter-select {
+    padding: 12px 15px;
+    border: 2px solid var(--order-border);
+    border-radius: 10px;
+    background: white;
+    color: var(--order-text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--order-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-box {
+    position: relative;
+    min-width: 250px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid var(--order-border);
+    border-radius: 10px;
+    background: white;
+    color: var(--order-text);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--order-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--order-light);
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.orders-table th {
+    background: var(--order-bg);
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--order-text);
+    border-bottom: 2px solid var(--order-border);
+    font-size: 0.9rem;
+}
+
+.orders-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--order-border);
+    vertical-align: middle;
+}
+
+.orders-table tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.order-id {
+    font-weight: 600;
+    color: var(--order-primary);
+    font-family: monospace;
+}
+
+.order-customer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.customer-name {
+    font-weight: 600;
+    color: var(--order-text);
+}
+
+.customer-email {
+    color: var(--order-light);
+    font-size: 0.85rem;
+}
+
+.order-items {
+    max-width: 200px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 0.85rem;
+}
+
+.item-name {
+    color: var(--order-text);
+    font-weight: 500;
+}
+
+.item-quantity {
+    background: var(--order-bg);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: var(--order-primary);
+    font-weight: 600;
+}
+
+.order-total {
+    font-weight: 700;
+    color: var(--order-primary);
+    font-size: 1.1rem;
+}
+
+.order-status {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 100px;
+}
+
+.status-pending {
+    background: rgba(237, 137, 54, 0.1);
+    color: var(--order-warning);
+    border: 1px solid rgba(237, 137, 54, 0.3);
+}
+
+.status-preparing {
+    background: rgba(66, 153, 225, 0.1);
+    color: var(--order-info);
+    border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.status-ready {
+    background: rgba(72, 187, 120, 0.1);
+    color: var(--order-success);
+    border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+.status-delivered {
+    background: rgba(72, 187, 120, 0.1);
+    color: var(--order-success);
+    border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+.status-cancelled {
+    background: rgba(245, 101, 101, 0.1);
+    color: var(--order-error);
+    border: 1px solid rgba(245, 101, 101, 0.3);
+}
+
+.order-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.action-btn.primary {
+    background: var(--order-primary);
+    color: white;
+}
+
+.action-btn.secondary {
+    background: var(--order-bg);
+    color: var(--order-text);
+    border: 1px solid var(--order-border);
+}
+
+.action-btn.danger {
+    background: var(--order-error);
+    color: white;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--order-shadow);
+    text-decoration: none;
+}
+
+.action-btn.primary:hover {
+    color: white;
+}
+
+.action-btn.secondary:hover {
+    color: var(--order-text);
+}
+
+.action-btn.danger:hover {
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--order-light);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--order-border);
+    margin-bottom: 20px;
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--order-text);
+}
+
+.empty-description {
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .order-management-container {
+        padding: 15px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-stats {
+        justify-content: center;
+    }
+    
+    .controls-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filters {
+        justify-content: center;
+    }
+    
+    .orders-table {
+        font-size: 0.85rem;
+    }
+    
+    .orders-table th,
+    .orders-table td {
+        padding: 10px 8px;
+    }
+    
+    .order-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.order-header,
+.order-content {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.order-header { animation-delay: 0.1s; }
+.order-content { animation-delay: 0.2s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="order-management-container">
+    <!-- Header -->
+    <div class="order-header">
+        <div class="header-content">
+            <h1 class="header-title">Gestion des commandes</h1>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalOrders">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="pendingOrders">0</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="preparingOrders">0</div>
+                    <div class="stat-label">En préparation</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="readyOrders">0</div>
+                    <div class="stat-label">Prêtes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="order-content">
+        <!-- Contrôles -->
+        <div class="controls-section">
+            <div class="filters">
+                <div class="filter-group">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Tous les statuts</option>
+                        <option value="pending">En attente</option>
+                        <option value="preparing">En préparation</option>
+                        <option value="ready">Prête</option>
+                        <option value="delivered">Livrée</option>
+                        <option value="cancelled">Annulée</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select class="filter-select" id="sortFilter">
+                        <option value="newest">Plus récentes</option>
+                        <option value="oldest">Plus anciennes</option>
+                        <option value="total_high">Total élevé</option>
+                        <option value="total_low">Total faible</option>
+                    </select>
+                </div>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Rechercher une commande...">
+            </div>
+        </div>
+
+        <!-- Tableau des commandes -->
+        <div class="table-container">
+            <table class="orders-table" id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Commande</th>
+                        <th>Client</th>
+                        <th>Articles</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <!-- Les commandes seront chargées dynamiquement -->
+                </tbody>
+            </table>
+            
+            <!-- État vide -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3 class="empty-title">Aucune commande trouvée</h3>
+                <p class="empty-description">Aucune commande ne correspond à vos critères de recherche.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Script de base pour la gestion des commandes
+document.addEventListener('DOMContentLoaded', function() {
+    // Charger les données de test
+    loadSampleData();
+    
+    // Configurer les événements
+    setupEventListeners();
+});
+
+function loadSampleData() {
+    const sampleOrders = [
+        {
+            id: 1234,
+            customer_name: "Jean Dupont",
+            customer_email: "jean.dupont@email.com",
+            items: [
+                { name: "Burger Deluxe", quantity: 2 },
+                { name: "Frites maison", quantity: 1 }
+            ],
+            total_amount: 25.50,
+            status: "pending",
+            created_at: "2024-01-15T14:30:00"
+        },
+        {
+            id: 1235,
+            customer_name: "Marie Martin",
+            customer_email: "marie.martin@email.com",
+            items: [
+                { name: "Salade César", quantity: 1 },
+                { name: "Café expresso", quantity: 1 }
+            ],
+            total_amount: 18.80,
+            status: "preparing",
+            created_at: "2024-01-15T14:15:00"
+        }
+    ];
+    
+    renderOrders(sampleOrders);
+    updateStats(sampleOrders);
+}
+
+function renderOrders(orders) {
+    const tbody = document.getElementById('ordersTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const table = document.getElementById('ordersTable');
+    
+    if (orders.length === 0) {
+        tbody.innerHTML = '';
+        table.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+    }
+    
+    table.style.display = 'table';
+    emptyState.style.display = 'none';
+    
+    tbody.innerHTML = orders.map(order => `
+        <tr>
+            <td>
+                <div class="order-id">#${order.id}</div>
+            </td>
+            <td>
+                <div class="order-customer">
+                    <div class="customer-name">${order.customer_name}</div>
+                    <div class="customer-email">${order.customer_email}</div>
+                </div>
+            </td>
+            <td>
+                <div class="order-items">
+                    ${order.items.map(item => `
+                        <div class="order-item">
+                            <span class="item-name">${item.name}</span>
+                            <span class="item-quantity">x${item.quantity}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </td>
+            <td>
+                <div class="order-total">${order.total_amount.toFixed(2)} €</div>
+            </td>
+            <td>
+                <div class="order-status status-${order.status}">${getStatusText(order.status)}</div>
+            </td>
+            <td>${new Date(order.created_at).toLocaleDateString('fr-FR')}</td>
+            <td>
+                <div class="order-actions">
+                    <button class="action-btn primary">
+                        <i class="fas fa-edit"></i>
+                        Modifier
+                    </button>
+                    <button class="action-btn secondary">
+                        <i class="fas fa-eye"></i>
+                        Voir
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function getStatusText(status) {
+    const statusMap = {
+        'pending': 'En attente',
+        'preparing': 'En préparation',
+        'ready': 'Prête',
+        'delivered': 'Livrée',
+        'cancelled': 'Annulée'
+    };
+    return statusMap[status] || status;
+}
+
+function updateStats(orders) {
+    const stats = {
+        total: orders.length,
+        pending: orders.filter(o => o.status === 'pending').length,
+        preparing: orders.filter(o => o.status === 'preparing').length,
+        ready: orders.filter(o => o.status === 'ready').length
+    };
+    
+    document.getElementById('totalOrders').textContent = stats.total;
+    document.getElementById('pendingOrders').textContent = stats.pending;
+    document.getElementById('preparingOrders').textContent = stats.preparing;
+    document.getElementById('readyOrders').textContent = stats.ready;
+}
+
+function setupEventListeners() {
+    // Filtres
+    document.getElementById('statusFilter').addEventListener('change', filterOrders);
+    document.getElementById('sortFilter').addEventListener('change', filterOrders);
+    
+    // Recherche
+    document.getElementById('searchInput').addEventListener('input', function() {
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(filterOrders, 300);
+    });
+}
+
+function filterOrders() {
+    // Logique de filtrage à implémenter
+    console.log('Filtrage des commandes...');
+}
+</script>
+{% endblock %} 

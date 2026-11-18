@@ -1,0 +1,263 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .service-hero {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        color: white;
+        padding: 6rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(247, 147, 30, 0.3) 0%, transparent 50%);
+        animation: heroGlow 10s ease-in-out infinite;
+    }
+
+    @keyframes heroGlow {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+    }
+
+    .service-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .service-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: titleSlideIn 1s ease-out;
+    }
+
+    .service-hero p {
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        animation: descriptionSlideIn 1s ease-out 0.3s both;
+    }
+
+    .service-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1.2rem 2.5rem;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        animation: ctaSlideIn 1s ease-out 0.6s both;
+    }
+
+    .service-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(255, 107, 53, 0.6);
+        color: white;
+        text-decoration: none;
+    }
+
+    .service-content {
+        padding: 4rem 0;
+        background: #f8fafc;
+    }
+
+    .service-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .service-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-card-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .service-card h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #1a1a1a;
+    }
+
+    .service-card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .service-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .service-features li {
+        padding: 0.5rem 0;
+        color: #666;
+        position: relative;
+        padding-left: 1.5rem;
+    }
+
+    .service-features li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #ff6b35;
+        font-weight: bold;
+    }
+
+    @keyframes titleSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes descriptionSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes ctaSlideIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Mode sombre */
+    [data-theme="dark"] .service-content {
+        background: #0f172a;
+    }
+
+    [data-theme="dark"] .service-card {
+        background: #1e293b;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="dark"] .service-card h3 {
+        color: #ffffff;
+    }
+
+    [data-theme="dark"] .service-card p,
+    [data-theme="dark"] .service-features li {
+        color: #cbd5e1;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .service-hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .service-hero p {
+            font-size: 1.1rem;
+        }
+
+        .service-cta {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .service-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .service-section {
+            padding: 0 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="service-hero">
+    <div class="service-hero-content">
+        <h1>{{ page_title }}</h1>
+        <p>{{ page_description }}</p>
+        <a href="#contact" class="service-cta">
+            <i class="fas fa-arrow-right"></i>
+            Commencer maintenant
+        </a>
+    </div>
+</section>
+
+<!-- Service Content -->
+<section class="service-content">
+    <div class="service-section">
+        {% block service_content %}
+        <!-- Le contenu spécifique sera défini dans les templates enfants -->
+        {% endblock %}
+    </div>
+</section>
+{% endblock %}

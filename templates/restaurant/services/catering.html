@@ -1,0 +1,99 @@
+{% extends 'restaurant/services/base_service.html' %}
+
+{% block service_content %}
+<div class="service-grid">
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-building"></i>
+        </div>
+        <h3>Événements d'Entreprise</h3>
+        <p>Service traiteur professionnel pour vos événements d'entreprise. Séminaires, lancements de produits, réunions...</p>
+        <ul class="service-features">
+            <li>Pauses café gourmandes</li>
+            <li>Déjeuners d'affaires</li>
+            <li>Cocktails d'entreprise</li>
+            <li>Service discret</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <h3>Mariages et Cérémonies</h3>
+        <p>Service traiteur complet pour vos cérémonies. De l'apéritif au dessert, nous créons des moments inoubliables.</p>
+        <ul class="service-features">
+            <li>Menus personnalisés</li>
+            <li>Service en salle</li>
+            <li>Décoration de table</li>
+            <li>Coordination complète</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-home"></i>
+        </div>
+        <h3>Événements Privés</h3>
+        <p>Service traiteur à domicile pour vos événements privés. Anniversaires, baptêmes, réunions de famille...</p>
+        <ul class="service-features">
+            <li>Livraison à domicile</li>
+            <li>Installation sur place</li>
+            <li>Service de vaisselle</li>
+            <li>Nettoyage inclus</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-glass-cheers"></i>
+        </div>
+        <h3>Cocktails et Réceptions</h3>
+        <p>Service cocktails élégant avec canapés raffinés et boissons d'exception pour vos réceptions.</p>
+        <ul class="service-features">
+            <li>Canapés variés</li>
+            <li>Cocktails signature</li>
+            <li>Service en continu</li>
+            <li>Barmans professionnels</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+        <h3>Événements Saisonniers</h3>
+        <p>Menus spéciaux pour les fêtes et événements saisonniers. Noël, Nouvel An, Pâques, etc.</p>
+        <ul class="service-features">
+            <li>Menus de fêtes</li>
+            <li>Décoration thématique</li>
+            <li>Spécialités saisonnières</li>
+            <li>Service festif</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h3>Service Premium</h3>
+        <p>Service traiteur haut de gamme pour événements exceptionnels. Cuisine raffinée et service impeccable.</p>
+        <ul class="service-features">
+            <li>Cuisine gastronomique</li>
+            <li>Service en tenue</li>
+            <li>Vins d'exception</li>
+            <li>Coordination dédiée</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Section Contact -->
+<div style="text-align: center; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #1a1a1a; margin-bottom: 1rem;">Besoin d'un service traiteur ?</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Contactez-nous pour un devis personnalisé et organiser votre événement parfait.</p>
+    <a href="{% url 'restaurant:contact' %}" class="service-cta">
+        <i class="fas fa-phone"></i>
+        Demander un devis
+    </a>
+</div>
+{% endblock %}

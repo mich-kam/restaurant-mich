@@ -1,0 +1,714 @@
+/* ===== ANIMATIONS AVANCÉES POUR LE HEADER ===== */
+
+/* ===== ANIMATIONS D'ENTRÉE ===== */
+@keyframes headerSlideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes navItemSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cartBadgePop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ===== EFFETS DE BRILLANCE ===== */
+@keyframes logoShine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+@keyframes buttonShine {
+    0% {
+        transform: translateX(-100%) skewX(-15deg);
+    }
+
+    100% {
+        transform: translateX(200%) skewX(-15deg);
+    }
+}
+
+/* ===== EFFETS DE PULSATION ===== */
+@keyframes cartPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    }
+
+    50% {
+        transform: scale(1.15);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6), 0 0 0 0 rgba(255, 107, 53, 0.4);
+    }
+}
+
+@keyframes cartGlow {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 1;
+    }
+}
+
+@keyframes cartBadgeHover {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+@keyframes cartBadgeClick {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.8);
+    }
+}
+
+/* ===== EFFETS DE RIPPLE ===== */
+@keyframes rippleExpand {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+@keyframes rippleFade {
+    from {
+        opacity: 1;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+/* ===== ANIMATIONS DU LOGO ===== */
+@keyframes logoIconBounce {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    25% {
+        transform: scale(1.1) rotate(2deg);
+    }
+
+    50% {
+        transform: scale(0.95) rotate(-1deg);
+    }
+
+    75% {
+        transform: scale(1.05) rotate(1deg);
+    }
+}
+
+@keyframes logoIconFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+/* ===== EFFETS DE NAVIGATION ===== */
+@keyframes navLinkHover {
+    0% {
+        transform: translateY(0) translateZ(0);
+    }
+
+    100% {
+        transform: translateY(-3px) translateZ(15px);
+    }
+}
+
+@keyframes navLinkUnderline {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+
+    100% {
+        width: 60%;
+        opacity: 1;
+    }
+}
+
+/* ===== EFFETS DE MENU MOBILE ===== */
+@keyframes mobileMenuSlideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes mobileMenuSlideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes mobileLinkSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===== EFFETS DE BOUTONS ===== */
+@keyframes buttonHover {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-3px) scale(1.02);
+    }
+}
+
+@keyframes buttonPress {
+    0% {
+        transform: translateY(-3px) scale(1.02);
+    }
+
+    50% {
+        transform: translateY(-1px) scale(0.98);
+    }
+
+    100% {
+        transform: translateY(-3px) scale(1.02);
+    }
+}
+
+/* ===== EFFETS DE GLOW ===== */
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 107, 53, 0.8), 0 0 30px rgba(255, 107, 53, 0.6);
+    }
+}
+
+@keyframes textGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+    }
+
+    50% {
+        text-shadow: 0 0 10px rgba(255, 107, 53, 0.8), 0 0 20px rgba(255, 107, 53, 0.6);
+    }
+}
+
+/* ===== EFFETS DE PARALLAXE ===== */
+@keyframes parallaxHover {
+    0% {
+        transform: translateY(0) translateZ(0) rotateX(0) rotateY(0);
+    }
+
+    100% {
+        transform: translateY(-2px) translateZ(10px) rotateX(5deg) rotateY(5deg);
+    }
+}
+
+/* ===== CLASSES D'ANIMATION ===== */
+.header-animate-in {
+    animation: headerSlideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-animate-in {
+    animation: logoFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item-animate-in {
+    animation: navItemSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cart-badge-animate-in {
+    animation: cartBadgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== EFFETS DE HOVER AVANCÉS ===== */
+.logo-container:hover .logo-icon {
+    animation: logoIconBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.nav-menu a:hover {
+    animation: navLinkHover 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.nav-menu a:hover::after {
+    animation: navLinkUnderline 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.reserve-btn:hover {
+    animation: buttonHover 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.reserve-btn:active {
+    animation: buttonPress 0.1s ease-in-out;
+}
+
+.btn-secondary:hover {
+    animation: buttonHover 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ===== EFFETS DE GLOW ===== */
+.glow-on-hover:hover {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.text-glow-on-hover:hover {
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+/* ===== EFFETS DE PARALLAXE ===== */
+.parallax-on-hover:hover {
+    animation: parallaxHover 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ===== EFFETS DE SHIMMER ===== */
+.shimmer-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transition: left 0.6s ease;
+}
+
+.shimmer-effect:hover::before {
+    left: 100%;
+}
+
+/* ===== EFFETS DE SCALE ===== */
+.scale-on-hover:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scale-on-click:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease-in-out;
+}
+
+/* ===== EFFETS DE ROTATION ===== */
+.rotate-on-hover:hover {
+    transform: rotate(5deg);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rotate-on-click:active {
+    transform: rotate(-5deg);
+    transition: transform 0.1s ease-in-out;
+}
+
+/* ===== EFFETS DE BOUNCE ===== */
+.bounce-on-hover:hover {
+    animation: bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== EFFETS DE WIGGLE ===== */
+.wiggle-on-hover:hover {
+    animation: wiggle 0.6s ease-in-out;
+}
+
+/* ===== EFFETS DE SHAKE ===== */
+.shake-on-hover:hover {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* ===== EFFETS DE PULSE ===== */
+.pulse-on-hover:hover {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+/* ===== EFFETS DE FLOAT ===== */
+.float-on-hover:hover {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* ===== EFFETS DE SPIN ===== */
+.spin-on-hover:hover {
+    animation: spin 1s linear infinite;
+}
+
+/* ===== EFFETS DE FLIP ===== */
+@keyframes flip {
+    0% {
+        transform: perspective(400px) rotateY(0);
+    }
+
+    100% {
+        transform: perspective(400px) rotateY(180deg);
+    }
+}
+
+.flip-on-hover:hover {
+    animation: flip 0.6s ease-in-out;
+}
+
+/* ===== EFFETS DE RUBBER BAND ===== */
+@keyframes rubberBand {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scaleX(1.25) scaleY(0.75);
+    }
+
+    40% {
+        transform: scaleX(0.75) scaleY(1.25);
+    }
+
+    60% {
+        transform: scaleX(1.15) scaleY(0.85);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.rubber-band-on-hover:hover {
+    animation: rubberBand 0.6s ease-in-out;
+}
+
+/* ===== EFFETS DE HEARTBEAT ===== */
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+
+    14% {
+        transform: scale(1.3);
+    }
+
+    28% {
+        transform: scale(1);
+    }
+
+    42% {
+        transform: scale(1.3);
+    }
+
+    70% {
+        transform: scale(1);
+    }
+}
+
+.heartbeat-on-hover:hover {
+    animation: heartbeat 1.5s ease-in-out;
+}
+
+/* ===== EFFETS DE JELLO ===== */
+@keyframes jello {
+
+    0%,
+    100% {
+        transform: scale3d(1, 1, 1);
+    }
+
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+    }
+
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+    }
+
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+    }
+
+    65% {
+        transform: scale3d(0.95, 1.05, 1);
+    }
+
+    75% {
+        transform: scale3d(1.05, 0.95, 1);
+    }
+}
+
+.jello-on-hover:hover {
+    animation: jello 0.6s ease-in-out;
+}
+
+/* ===== EFFETS DE TADA ===== */
+@keyframes tada {
+    0% {
+        transform: scale(1);
+    }
+
+    10%,
+    20% {
+        transform: scale(0.9) rotate(-3deg);
+    }
+
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: scale(1.1) rotate(3deg);
+    }
+
+    40%,
+    60%,
+    80% {
+        transform: scale(1.1) rotate(-3deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+.tada-on-hover:hover {
+    animation: tada 1s ease-in-out;
+}
+
+/* ===== RESPONSIVE ANIMATIONS ===== */
+@media (max-width: 768px) {
+    .header-animate-in {
+        animation-duration: 0.6s;
+    }
+
+    .logo-animate-in {
+        animation-duration: 0.6s;
+    }
+
+    .nav-item-animate-in {
+        animation-duration: 0.4s;
+    }
+
+    .cart-badge-animate-in {
+        animation-duration: 0.4s;
+    }
+
+    /* Désactiver certaines animations sur mobile pour les performances */
+    .parallax-on-hover:hover,
+    .rotate-on-hover:hover,
+    .flip-on-hover:hover {
+        animation: none;
+        transform: none;
+    }
+}
+
+/* ===== RÉDUCTION DES ANIMATIONS ===== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .header-animate-in,
+    .logo-animate-in,
+    .nav-item-animate-in,
+    .cart-badge-animate-in {
+        animation: none;
+    }
+
+    .glow-on-hover:hover,
+    .text-glow-on-hover:hover,
+    .pulse-on-hover:hover,
+    .float-on-hover:hover,
+    .spin-on-hover:hover,
+    .heartbeat-on-hover:hover {
+        animation: none;
+    }
+}
+
+/* ===== PERFORMANCE ===== */
+.header * {
+    will-change: transform, opacity;
+}
+
+.logo-container,
+.nav-menu a,
+.reserve-btn,
+.btn-secondary,
+.cart-link,
+.user-link {
+    will-change: transform;
+}
+
+.cart-badge {
+    will-change: transform, box-shadow;
+}
+
+/* ===== OPTIMISATIONS GPU ===== */
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* ===== EFFETS DE CHARGEMENT ===== */
+@keyframes loadingPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+/* ===== EFFETS DE SUCCESS ===== */
+@keyframes successCheck {
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.success-animation {
+    animation: successCheck 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== EFFETS D'ERREUR ===== */
+@keyframes errorShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.error-animation {
+    animation: errorShake 0.5s ease-in-out;
+}

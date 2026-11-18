@@ -1,0 +1,99 @@
+{% extends 'restaurant/services/base_service.html' %}
+
+{% block service_content %}
+<div class="service-grid">
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-wine-glass-alt"></i>
+        </div>
+        <h3>Dégustation de Vins Rouges</h3>
+        <p>Découvrez les vins rouges d'exception avec nos sommeliers experts. Bordeaux, Bourgogne, Rhône et plus encore.</p>
+        <ul class="service-features">
+            <li>Vins d'exception</li>
+            <li>Accords mets-vins</li>
+            <li>Techniques de dégustation</li>
+            <li>Histoire des vins</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-wine-bottle"></i>
+        </div>
+        <h3>Dégustation de Vins Blancs</h3>
+        <p>Explorez la finesse des vins blancs. Chardonnay, Sauvignon, Riesling et autres cépages d'exception.</p>
+        <ul class="service-features">
+            <li>Vins blancs secs</li>
+            <li>Vins moelleux</li>
+            <li>Température de service</li>
+            <li>Accords gastronomiques</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-champagne-glasses"></i>
+        </div>
+        <h3>Champagne et Bulles</h3>
+        <p>Dégustation de champagnes et vins effervescents. Découvrez l'art de la bulle et les grandes maisons.</p>
+        <ul class="service-features">
+            <li>Champagnes prestige</li>
+            <li>Crémants français</li>
+            <li>Prosecco italien</li>
+            <li>Service traditionnel</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>Dégustations Privées</h3>
+        <p>Dégustations privées pour groupes ou événements spéciaux. Ambiance intimiste et service personnalisé.</p>
+        <ul class="service-features">
+            <li>Groupes de 4-12 personnes</li>
+            <li>Ambiance intimiste</li>
+            <li>Service dédié</li>
+            <li>Accords mets-vins</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h3>Cours de Sommellerie</h3>
+        <p>Formation complète à la sommellerie. Apprenez les techniques de dégustation et l'art du service.</p>
+        <ul class="service-features">
+            <li>Techniques de dégustation</li>
+            <li>Service professionnel</li>
+            <li>Accords mets-vins</li>
+            <li>Certificat de formation</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h3>Événements Spéciaux</h3>
+        <p>Dégustations pour événements spéciaux : mariages, anniversaires, événements d'entreprise...</p>
+        <ul class="service-features">
+            <li>Événements sur mesure</li>
+            <li>Vins d'exception</li>
+            <li>Service premium</li>
+            <li>Coordination complète</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Section Contact -->
+<div style="text-align: center; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #1a1a1a; margin-bottom: 1rem;">Prêt à découvrir l'art du vin ?</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Réservez votre dégustation et laissez-vous guider par nos sommeliers experts.</p>
+    <a href="{% url 'restaurant:contact' %}" class="service-cta">
+        <i class="fas fa-calendar-check"></i>
+        Réserver une dégustation
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'restaurant/services/base_service.html' %}
+
+{% block service_content %}
+<div class="service-grid">
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-utensils"></i>
+        </div>
+        <h3>Cuisine Française</h3>
+        <p>Découvrez les secrets de la gastronomie française avec nos chefs expérimentés. Techniques traditionnelles et recettes authentiques.</p>
+        <ul class="service-features">
+            <li>Techniques de base</li>
+            <li>Sauces classiques</li>
+            <li>Pâtisserie fine</li>
+            <li>Dégustation incluse</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-pizza-slice"></i>
+        </div>
+        <h3>Cuisine Internationale</h3>
+        <p>Voyagez à travers les saveurs du monde avec nos ateliers de cuisine internationale. Italie, Asie, Méditerranée...</p>
+        <ul class="service-features">
+            <li>Pâtes fraîches</li>
+            <li>Sushi et sashimi</li>
+            <li>Cuisine méditerranéenne</li>
+            <li>Épices et aromates</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-birthday-cake"></i>
+        </div>
+        <h3>Pâtisserie</h3>
+        <p>Apprenez l'art de la pâtisserie avec nos pâtissiers experts. Gâteaux, viennoiseries, chocolat et plus encore.</p>
+        <ul class="service-features">
+            <li>Gâteaux d'anniversaire</li>
+            <li>Croissants et viennoiseries</li>
+            <li>Chocolat et confiserie</li>
+            <li>Décoration créative</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>Ateliers en Groupe</h3>
+        <p>Partagez l'expérience culinaire en groupe. Idéal pour les événements d'entreprise, anniversaires ou sorties entre amis.</p>
+        <ul class="service-features">
+            <li>Groupes de 6-12 personnes</li>
+            <li>Team building culinaire</li>
+            <li>Événements privés</li>
+            <li>Matériel fourni</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-child"></i>
+        </div>
+        <h3>Cours Enfants</h3>
+        <p>Initiez vos enfants à la cuisine de manière ludique et sécurisée. Découverte des saveurs et techniques adaptées.</p>
+        <ul class="service-features">
+            <li>Âges 6-12 ans</li>
+            <li>Recettes simples et amusantes</li>
+            <li>Décoration créative</li>
+            <li>Certificat de participation</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h3>Cours Privés</h3>
+        <p>Bénéficiez d'un enseignement personnalisé avec nos chefs. Programme adapté à vos besoins et niveau.</p>
+        <ul class="service-features">
+            <li>Enseignement individuel</li>
+            <li>Programme sur mesure</li>
+            <li>Horaires flexibles</li>
+            <li>Suivi personnalisé</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Section Contact -->
+<div style="text-align: center; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #1a1a1a; margin-bottom: 1rem;">Prêt à apprendre l'art culinaire ?</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Réservez votre cours et commencez votre voyage gastronomique dès aujourd'hui.</p>
+    <a href="{% url 'restaurant:contact' %}" class="service-cta">
+        <i class="fas fa-calendar-alt"></i>
+        Réserver un cours
+    </a>
+</div>
+{% endblock %}

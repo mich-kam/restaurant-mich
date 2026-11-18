@@ -1,0 +1,280 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}FAQ - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .faq-hero {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        color: white;
+        padding: 6rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .faq-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(247, 147, 30, 0.3) 0%, transparent 50%);
+        animation: heroGlow 10s ease-in-out infinite;
+    }
+
+    @keyframes heroGlow {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+    }
+
+    .faq-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .faq-hero p {
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .faq-content {
+        padding: 4rem 0;
+        background: #f8fafc;
+    }
+
+    .faq-section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .faq-item {
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .faq-question {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background: linear-gradient(135deg, #e55a2b 0%, #e0851a 100%);
+    }
+
+    .faq-answer {
+        padding: 0 1.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .faq-answer.active {
+        padding: 1.5rem;
+        max-height: 200px;
+    }
+
+    .faq-answer p {
+        color: #666;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .faq-toggle {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-toggle.active {
+        transform: rotate(45deg);
+    }
+
+    /* Mode sombre */
+    [data-theme="dark"] .faq-content {
+        background: #0f172a;
+    }
+
+    [data-theme="dark"] .faq-item {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="dark"] .faq-answer p {
+        color: #cbd5e1;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .faq-hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .faq-hero p {
+            font-size: 1.1rem;
+        }
+
+        .faq-section {
+            padding: 0 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="faq-hero">
+    <div class="faq-hero-content">
+        <h1>Questions Fréquentes</h1>
+        <p>Trouvez rapidement les réponses à vos questions sur nos services et notre restaurant.</p>
+    </div>
+</section>
+
+<!-- FAQ Content -->
+<section class="faq-content">
+    <div class="faq-section">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Comment réserver une table ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Vous pouvez réserver une table en ligne 24h/24 sur notre site, par téléphone ou en nous contactant directement. Notre système de réservation est simple et rapide avec confirmation instantanée.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Quels sont vos horaires d'ouverture ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Nous sommes ouverts du mardi au dimanche. Service du midi de 12h à 14h30 et du soir de 19h à 22h30. Le restaurant est fermé le lundi.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Proposez-vous des menus végétariens ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Oui, nous proposons plusieurs options végétariennes et végétaliennes. Nos chefs créent des plats délicieux adaptés à tous les régimes alimentaires.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Comment fonctionne la livraison ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Nous proposons un service de livraison rapide dans un rayon de 10km autour du restaurant. Les commandes sont préparées fraîchement et livrées en 30-45 minutes.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Organisez-vous des événements privés ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Absolument ! Nous organisons des événements privés : mariages, anniversaires, séminaires d'entreprise. Contactez-nous pour discuter de vos besoins.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Proposez-vous des cours de cuisine ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Oui, nous proposons des cours de cuisine pour tous niveaux. Des ateliers en groupe aux cours privés, découvrez l'art culinaire avec nos chefs experts.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Comment annuler une réservation ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Vous pouvez annuler votre réservation en ligne jusqu'à 2h avant l'heure prévue, par téléphone ou en nous contactant directement. Nous vous remercions de nous prévenir le plus tôt possible.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Acceptez-vous les cartes de crédit ?
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Oui, nous acceptons toutes les cartes de crédit principales (Visa, Mastercard, American Express) ainsi que les paiements en espèces et par chèque.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function toggleFAQ(element) {
+    const answer = element.nextElementSibling;
+    const toggle = element.querySelector('.faq-toggle');
+    
+    if (answer.classList.contains('active')) {
+        answer.classList.remove('active');
+        toggle.classList.remove('active');
+        toggle.textContent = '+';
+    } else {
+        // Fermer toutes les autres réponses
+        document.querySelectorAll('.faq-answer').forEach(item => {
+            item.classList.remove('active');
+        });
+        document.querySelectorAll('.faq-toggle').forEach(item => {
+            item.classList.remove('active');
+            item.textContent = '+';
+        });
+        
+        // Ouvrir la réponse cliquée
+        answer.classList.add('active');
+        toggle.classList.add('active');
+        toggle.textContent = '×';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,512 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== PAGE DÉTAIL ÉVÉNEMENT ===== */
+.event-detail-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 120px 0 60px;
+}
+
+.event-detail-card {
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.event-detail-header {
+    position: relative;
+    height: 400px;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                url('{{ event|get_image_url:"events" }}');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.event-detail-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.8) 0%, rgba(247, 147, 30, 0.8) 100%);
+    z-index: 1;
+}
+
+.event-detail-header-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+.event-detail-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.event-detail-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.event-detail-badges {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.event-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.event-detail-content {
+    padding: 50px;
+}
+
+.event-info-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.event-description {
+    line-height: 1.8;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.event-sidebar {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    height: fit-content;
+}
+
+.event-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.event-details-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.event-details-list li:last-child {
+    border-bottom: none;
+}
+
+.event-details-list i {
+    width: 20px;
+    color: #ff6b35;
+    font-size: 1.1rem;
+}
+
+.event-details-list span {
+    font-weight: 600;
+    color: #333;
+}
+
+.event-details-list .detail-value {
+    color: #666;
+    font-weight: normal;
+}
+
+.event-capacity-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.capacity-bar-large {
+    width: 100%;
+    height: 12px;
+    background: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.capacity-fill-large {
+    height: 100%;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    transition: width 0.5s ease;
+}
+
+.capacity-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.capacity-text-large {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.event-price-section {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.price-amount-large {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.price-label-large {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.event-actions-section {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.btn-event-detail {
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+    justify-content: center;
+}
+
+.btn-primary-event-detail {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: white;
+    border: none;
+}
+
+.btn-primary-event-detail:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 107, 53, 0.3);
+    color: white;
+}
+
+.btn-secondary-event-detail {
+    background: white;
+    color: #ff6b35;
+    border: 2px solid #ff6b35;
+}
+
+.btn-secondary-event-detail:hover {
+    background: #ff6b35;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.btn-disabled-event-detail {
+    background: #6c757d;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-disabled-event-detail:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.event-gallery {
+    margin-top: 40px;
+}
+
+.event-gallery h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.gallery-item {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .event-detail-container {
+        padding: 100px 20px 40px;
+    }
+    
+    .event-detail-content {
+        padding: 30px 20px;
+    }
+    
+    .event-info-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .event-detail-title {
+        font-size: 2rem;
+    }
+    
+    .event-detail-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .event-actions-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-event-detail {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.event-detail-card {
+    animation: slideInUp 0.8s ease-out;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="event-detail-container">
+    <div class="event-detail-card">
+        <!-- Header de l'événement -->
+        <div class="event-detail-header">
+            <div class="event-detail-header-content">
+                <h1 class="event-detail-title">{{ event.title }}</h1>
+                <p class="event-detail-subtitle">{{ event.description|truncatewords:15 }}</p>
+                
+                <div class="event-detail-badges">
+                    <div class="event-badge">
+                        <i class="fas fa-calendar"></i>
+                        {{ event.date|date:"d F Y" }}
+                    </div>
+                    <div class="event-badge">
+                        <i class="fas fa-clock"></i>
+                        {{ event.time|time:"H:i" }}
+                    </div>
+                    {% if event.is_featured %}
+                    <div class="event-badge">
+                        <i class="fas fa-star"></i>
+                        Événement spécial
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="event-detail-content">
+            <div class="event-info-grid">
+                <!-- Description -->
+                <div class="event-description">
+                    <h3>À propos de cet événement</h3>
+                    <p>{{ event.description }}</p>
+                    
+                    {% if event.location %}
+                    <h4>Lieu</h4>
+                    <p>{{ event.location }}</p>
+                    {% endif %}
+                    
+                    <!-- Galerie d'images (si disponible) -->
+                    <div class="event-gallery">
+                        <h3>Galerie</h3>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Événement">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Événement">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Événement">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar avec informations -->
+                <div class="event-sidebar">
+                    <h4>Détails de l'événement</h4>
+                    <ul class="event-details-list">
+                        <li>
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Date:</span>
+                            <span class="detail-value">{{ event.date|date:"d F Y" }}</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Heure:</span>
+                            <span class="detail-value">{{ event.time|time:"H:i" }}</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Lieu:</span>
+                            <span class="detail-value">{{ event.location|default:"Notre restaurant" }}</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-tag"></i>
+                            <span>Catégorie:</span>
+                            <span class="detail-value">{{ event.get_category_display }}</span>
+                        </li>
+                    </ul>
+
+                    <!-- Capacité -->
+                    {% if event.max_capacity %}
+                    <div class="event-capacity-section">
+                        <h5>Places disponibles</h5>
+                        <div class="capacity-info">
+                            <span>{{ event.current_bookings }} réservées</span>
+                            <span>{{ event.available_spots }} disponibles</span>
+                        </div>
+                        <div class="capacity-bar-large">
+                            <div class="capacity-fill-large" style="width: {{ event.booking_percentage }}%"></div>
+                        </div>
+                        <div class="capacity-text-large">
+                            {{ event.available_spots }} places restantes
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Prix -->
+                    {% if event.price %}
+                    <div class="event-price-section">
+                        <div class="price-amount-large">{{ event.price }} €</div>
+                        <div class="price-label-large">par personne</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="event-actions-section">
+                {% if not event.is_full %}
+                <a href="{% url 'restaurant:contact' %}?event={{ event.id }}" class="btn-event-detail btn-primary-event-detail">
+                    <i class="fas fa-calendar-plus"></i>
+                    Réserver maintenant
+                </a>
+                {% else %}
+                <button class="btn-event-detail btn-disabled-event-detail" disabled>
+                    <i class="fas fa-times-circle"></i>
+                    Événement complet
+                </button>
+                {% endif %}
+                
+                <a href="{% url 'restaurant:events' %}" class="btn-event-detail btn-secondary-event-detail">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour aux événements
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation de la barre de capacité
+    const capacityFill = document.querySelector('.capacity-fill-large');
+    if (capacityFill) {
+        setTimeout(() => {
+            capacityFill.style.width = capacityFill.style.width;
+        }, 500);
+    }
+    
+    // Animation des éléments au scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.event-details-list li, .gallery-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'all 0.6s ease';
+        observer.observe(el);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,304 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Contact Section -->
+<section class="contact-section" style="padding: 120px 0 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="section-title">Make a Reservation</h2>
+                <p class="mb-4">Book your table and enjoy an unforgettable dining experience with us.</p>
+                
+                <form method="post" class="reservation-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="text-danger">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="text-danger">{{ form.phone.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.guests.id_for_label }}" class="form-label">Number of Guests</label>
+                            {{ form.guests }}
+                            {% if form.guests.errors %}
+                                <div class="text-danger">{{ form.guests.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.date.id_for_label }}" class="form-label">Date</label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="text-danger">{{ form.date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.time.id_for_label }}" class="form-label">Time</label>
+                            {{ form.time }}
+                            {% if form.time.errors %}
+                                <div class="text-danger">{{ form.time.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.special_requests.id_for_label }}" class="form-label">Special Requests</label>
+                        {{ form.special_requests }}
+                        {% if form.special_requests.errors %}
+                            <div class="text-danger">{{ form.special_requests.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn-primary">Make Reservation</button>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    {% if settings.phone %}
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>{{ settings.phone }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if settings.email %}
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>{{ settings.email }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if settings.address %}
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p>{{ settings.address }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Opening Hours</h4>
+                            <p>Monday - Sunday: 11:00 AM - 10:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Images du restaurant pour la page contact -->
+        <div class="image-grid image-grid-3" style="margin-top: 40px;">
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Salle principale">
+                <div class="image-badge">Principale</div>
+                <div class="image-overlay">
+                    <h3>Salle Principale</h3>
+                    <p>Ambiance élégante et conviviale</p>
+                </div>
+            </div>
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Terrasse">
+                <div class="image-badge">Extérieur</div>
+                <div class="image-overlay">
+                    <h3>Terrasse</h3>
+                    <p>Profitez de nos plats en plein air</p>
+                </div>
+            </div>
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Bar">
+                <div class="image-badge">Bar</div>
+                <div class="image-overlay">
+                    <h3>Bar Lounge</h3>
+                    <p>Cocktails et ambiance détendue</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.contact-section {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-color) 100%);
+    color: var(--text-color);
+    padding-top: 120px;
+    padding-bottom: 80px;
+}
+
+.reservation-form {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(17,24,39,0.08);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+}
+
+.reservation-form input,
+.reservation-form textarea,
+.reservation-form select {
+    width: 100%;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reservation-form .form-label {
+    color: var(--text-color);
+}
+
+.contact-section > .container > .row > .col-lg-6 > p {
+    color: var(--text-secondary);
+}
+
+.reservation-form input:focus,
+.reservation-form textarea:focus,
+.reservation-form select:focus {
+    outline: none;
+    border-color: rgba(255,107,53,0.7);
+    box-shadow: 0 0 0 4px rgba(255,107,53,0.08);
+}
+
+.contact-info {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(17,24,39,0.08);
+    height: 100%;
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+}
+
+.contact-info h3,
+.contact-item h4 {
+    color: var(--text-color);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.contact-item i {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: 0 10px 25px rgba(255,107,53,0.2);
+}
+
+.contact-item h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.contact-item p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.image-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 40px;
+}
+
+.image-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.1);
+}
+
+.image-card img {
+    display: block;
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    background: linear-gradient(180deg, transparent, rgba(15,23,42,0.8));
+    color: white;
+    padding: 1.25rem;
+}
+
+.image-overlay h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+    color: white;
+}
+
+.image-overlay p {
+    margin: 0;
+    color: rgba(255,255,255,0.8);
+}
+
+.image-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(6px);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 999px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .contact-section {
+        padding-top: 100px;
+    }
+
+    .image-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .reservation-form,
+    .contact-info {
+        padding: 1.25rem;
+    }
+}
+</style>
+{% endblock %} 

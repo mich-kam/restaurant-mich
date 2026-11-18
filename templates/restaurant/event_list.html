@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Événements</title>
+</head>
+<body>
+    <h1>Événements à venir</h1>
+    <a href="{% url 'event_create' %}">➕ Créer un événement</a>
+    <ul>
+        {% for event in events %}
+            <li>
+                <strong>{{ event.title }}</strong><br>
+                {{ event.date|date:"d/m/Y H:i" }} - {{ event.location }}<br>
+                <p>{{ event.description }}</p>
+                <a href="{% url 'event_update' event.pk %}">✏️ Modifier</a> |
+                <a href="{% url 'event_delete' event.pk %}">🗑️ Supprimer</a>
+            </li>
+        {% empty %}
+            <li>Aucun événement trouvé.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,356 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}Paiement Réussi - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== PAGE DE SUCCÈS DE PAIEMENT ===== */
+.success-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 120px 0 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-card {
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 60px 40px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.success-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    animation: bounceIn 1s ease-out;
+}
+
+.success-icon i {
+    font-size: 3rem;
+    color: white;
+}
+
+.success-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.success-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.order-details {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px 0;
+    text-align: left;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.order-details h3 {
+    color: #333;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.detail-value {
+    color: #333;
+    font-weight: 500;
+}
+
+.success-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.btn-success-action {
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    min-width: 150px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-primary-success {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: white;
+}
+
+.btn-primary-success:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+    color: white;
+}
+
+.btn-secondary-success {
+    background: transparent;
+    color: #ff6b35;
+    border: 2px solid #ff6b35;
+}
+
+.btn-secondary-success:hover {
+    background: #ff6b35;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #ff6b35;
+    animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .success-container {
+        padding: 100px 20px 40px;
+    }
+    
+    .success-card {
+        padding: 40px 20px;
+    }
+    
+    .success-title {
+        font-size: 2rem;
+    }
+    
+    .success-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .success-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-success-action {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1 class="success-title">Paiement Réussi !</h1>
+        <p class="success-subtitle">
+            Votre commande a été confirmée avec succès. Nous vous remercions pour votre confiance !
+        </p>
+        
+        <div class="order-details">
+            <h3>Détails de la commande</h3>
+            <div class="detail-row">
+                <span class="detail-label">Numéro de commande :</span>
+                <span class="detail-value">#{{ order.id|default:"12345" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Date :</span>
+                <span class="detail-value">{{ order.created_at|date:"d/m/Y H:i"|default:"27/08/2024 16:30" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Montant total :</span>
+                <span class="detail-value">€{{ order.total_amount|default:"45.50" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Statut :</span>
+                <span class="detail-value detail-status">Confirmé</span>
+            </div>
+        </div>
+        
+        <div class="success-actions">
+            <a href="{% url 'restaurant:home' %}" class="btn-success-action btn-primary-success">
+                <i class="fas fa-home"></i>
+                Retour à l'accueil
+            </a>
+            <a href="{% url 'restaurant:menu' %}" class="btn-success-action btn-secondary-success">
+                <i class="fas fa-utensils"></i>
+                Voir le menu
+            </a>
+        </div>
+        
+        <!-- Images de célébration pour la page de succès -->
+        <div class="image-grid image-grid-3" style="margin-top: 40px;">
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Plat délicieux">
+                <div class="image-badge">Délicieux</div>
+                <div class="image-overlay">
+                    <h3>Plats Exquis</h3>
+                    <p>Préparez-vous pour une expérience culinaire</p>
+                </div>
+            </div>
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Ambiance">
+                <div class="image-badge">Ambiance</div>
+                <div class="image-overlay">
+                    <h3>Ambiance Élégante</h3>
+                    <p>Un cadre parfait pour votre repas</p>
+                </div>
+            </div>
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Service">
+                <div class="image-badge">Service</div>
+                <div class="image-overlay">
+                    <h3>Service Premium</h3>
+                    <p>Une équipe dédiée à votre satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Créer des confettis
+    createConfetti();
+    
+    // Envoyer un événement Google Analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'purchase', {
+            'transaction_id': '{{ order.id|default:"12345" }}',
+            'value': {{ order.total_amount|default:45.50 }},
+            'currency': 'EUR'
+        });
+    }
+    
+    // Notification de succès
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('Paiement Réussi !', {
+            body: 'Votre commande a été confirmée avec succès.',
+            icon: '/static/images/logo.png'
+        });
+    }
+});
+
+function createConfetti() {
+    const colors = ['#ff6b35', '#f7931e', '#28a745', '#20c997', '#007bff'];
+    
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            
+            document.body.appendChild(confetti);
+            
+            // Supprimer après l'animation
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }, i * 100);
+    }
+}
+</script>
+{% endblock %}

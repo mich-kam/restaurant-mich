@@ -1,0 +1,308 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}Paiement annulé - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== PAYMENT CANCEL MODERNE ===== */
+.cancel-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 120px 0 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancel-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    padding: 60px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.cancel-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+}
+
+.cancel-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.cancel-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.cancel-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.cancel-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.cancel-message {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+    border-left: 4px solid #dc3545;
+}
+
+.cancel-message h3 {
+    color: #dc3545;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.cancel-message p {
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+    justify-content: center;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: white;
+    border: none;
+}
+
+.action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+    color: white;
+}
+
+.action-btn.secondary {
+    background: white;
+    color: #666;
+    border: 2px solid #e9ecef;
+}
+
+.action-btn.secondary:hover {
+    border-color: #ff6b35;
+    color: #ff6b35;
+    transform: translateY(-2px);
+}
+
+.help-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+}
+
+.help-title {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.help-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.help-link {
+    color: #ff6b35;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.help-link:hover {
+    color: #f7931e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cancel-container {
+        padding: 100px 20px 40px;
+    }
+    
+    .cancel-card {
+        padding: 40px 20px;
+    }
+    
+    .cancel-title {
+        font-size: 2rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .action-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cancel-container">
+    <div class="cancel-card">
+        <!-- Icône d'annulation -->
+        <div class="cancel-icon">
+            <i class="fas fa-times"></i>
+        </div>
+
+        <!-- Titre et sous-titre -->
+        <h1 class="cancel-title">Paiement annulé</h1>
+        <p class="cancel-subtitle">
+            Votre paiement a été annulé. Aucun montant n'a été débité de votre compte.
+        </p>
+
+        <!-- Message d'information -->
+        <div class="cancel-message">
+            <h3>Que s'est-il passé ?</h3>
+            <p>
+                Le processus de paiement a été interrompu. Cela peut être dû à une annulation volontaire 
+                ou à un problème technique temporaire. Votre commande a été sauvegardée et vous pouvez 
+                la finaliser à tout moment.
+            </p>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+            <a href="{% url 'restaurant:checkout' %}" class="action-btn primary">
+                <i class="fas fa-credit-card"></i>
+                Réessayer le paiement
+            </a>
+            <a href="{% url 'restaurant:cart' %}" class="action-btn secondary">
+                <i class="fas fa-shopping-cart"></i>
+                Retour au panier
+            </a>
+        </div>
+
+        <!-- Section d'aide -->
+        <div class="help-section">
+            <h3 class="help-title">Besoin d'aide ?</h3>
+            <div class="help-links">
+                <a href="{% url 'restaurant:contact' %}" class="help-link">
+                    <i class="fas fa-headset"></i>
+                    Contacter le support
+                </a>
+                <a href="#" class="help-link">
+                    <i class="fas fa-question-circle"></i>
+                    FAQ
+                </a>
+                <a href="{% url 'restaurant:home' %}" class="help-link">
+                    <i class="fas fa-home"></i>
+                    Retour à l'accueil
+                </a>
+            </div>
+        </div>
+        
+        <!-- Images d'encouragement pour la page d'annulation -->
+        <div class="image-grid image-grid-2" style="margin-top: 40px;">
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Plat délicieux">
+                <div class="image-badge">Délicieux</div>
+                <div class="image-overlay">
+                    <h3>Nos Plats Vous Attendent</h3>
+                    <p>Revenez quand vous voulez</p>
+                </div>
+            </div>
+            <div class="image-card image-with-badge">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Ambiance">
+                <div class="image-badge">Ambiance</div>
+                <div class="image-overlay">
+                    <h3>Ambiance Accueillante</h3>
+                    <p>Nous serons ravis de vous recevoir</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour sauvegarder les données de commande -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sauvegarder les données de commande dans le localStorage
+    const orderData = {
+        items: [
+            { name: "Burger Deluxe", quantity: 2, price: 12.50 },
+            { name: "Frites maison", quantity: 1, price: 3.50 }
+        ],
+        total: 28.50,
+        timestamp: new Date().toISOString()
+    };
+    
+    localStorage.setItem('pendingOrder', JSON.stringify(orderData));
+    
+    // Notification pour l'utilisateur
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('Paiement annulé', {
+            body: 'Votre commande a été sauvegardée. Vous pouvez la finaliser plus tard.',
+            icon: '/static/images/logo.png'
+        });
+    }
+    
+    // Google Analytics - Événement de paiement annulé
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'payment_cancelled', {
+            'event_category': 'ecommerce',
+            'event_label': 'checkout',
+            'value': 28.50
+        });
+    }
+});
+</script>
+{% endblock %}

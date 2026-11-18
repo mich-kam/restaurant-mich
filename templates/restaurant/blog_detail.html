@@ -1,0 +1,441 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== BLOG DETAIL MODERNE ===== */
+
+:root {
+    --blog-primary: #ff6b35;
+    --blog-secondary: #764ba2;
+    --blog-text: #2d3748;
+    --blog-light: #718096;
+    --blog-border: #e2e8f0;
+    --blog-bg: #f7fafc;
+    --blog-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --blog-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.blog-detail-container {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.blog-hero {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: var(--blog-shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--blog-text);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.blog-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: var(--blog-light);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.blog-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.blog-meta-item i {
+    color: var(--blog-primary);
+}
+
+.blog-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: var(--blog-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.blog-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--blog-text);
+    margin-bottom: 30px;
+}
+
+.blog-text p {
+    margin-bottom: 20px;
+}
+
+.blog-text h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--blog-text);
+    margin: 30px 0 20px 0;
+    border-bottom: 2px solid var(--blog-primary);
+    padding-bottom: 10px;
+}
+
+.blog-text h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--blog-text);
+    margin: 25px 0 15px 0;
+}
+
+.blog-text ul, .blog-text ol {
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.blog-text li {
+    margin-bottom: 10px;
+}
+
+.blog-text blockquote {
+    background: var(--blog-bg);
+    border-left: 4px solid var(--blog-primary);
+    padding: 20px;
+    margin: 30px 0;
+    border-radius: 8px;
+    font-style: italic;
+    color: var(--blog-light);
+}
+
+.blog-text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: var(--blog-shadow);
+}
+
+.social-sharing {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--blog-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.sharing-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--blog-text);
+    margin-bottom: 20px;
+}
+
+.sharing-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+}
+
+.share-btn.facebook {
+    background: #1877f2;
+}
+
+.share-btn.twitter {
+    background: #1da1f2;
+}
+
+.share-btn.linkedin {
+    background: #0077b5;
+}
+
+.share-btn.whatsapp {
+    background: #25d366;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--blog-shadow-lg);
+    text-decoration: none;
+    color: white;
+}
+
+.recent-posts {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--blog-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.recent-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--blog-text);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.recent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.recent-post-card {
+    background: var(--blog-bg);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--blog-border);
+}
+
+.recent-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--blog-shadow-lg);
+    text-decoration: none;
+    color: inherit;
+}
+
+.recent-post-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--blog-text);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.recent-post-excerpt {
+    color: var(--blog-light);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.recent-post-date {
+    color: var(--blog-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .blog-detail-container {
+        padding: 15px;
+    }
+    
+    .blog-hero {
+        padding: 30px 20px;
+    }
+    
+    .blog-title {
+        font-size: 2rem;
+    }
+    
+    .blog-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .blog-content {
+        padding: 30px 20px;
+    }
+    
+    .sharing-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .share-btn {
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
+    }
+    
+    .recent-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.blog-hero,
+.blog-content,
+.social-sharing,
+.recent-posts {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.blog-hero { animation-delay: 0.1s; }
+.blog-content { animation-delay: 0.2s; }
+.social-sharing { animation-delay: 0.3s; }
+.recent-posts { animation-delay: 0.4s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="blog-detail-container">
+    <!-- Hero Section -->
+    <div class="blog-hero">
+        <h1 class="blog-title">{{ post.title }}</h1>
+        <div class="blog-meta">
+            <div class="blog-meta-item">
+                <i class="fas fa-calendar"></i>
+                <span>{{ post.created_at|date:"d/m/Y" }}</span>
+            </div>
+            <div class="blog-meta-item">
+                <i class="fas fa-user"></i>
+                <span>{{ post.author|default:"Équipe Bites" }}</span>
+            </div>
+            <div class="blog-meta-item">
+                <i class="fas fa-clock"></i>
+                <span>{{ post.created_at|timesince }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu de l'article -->
+    <div class="blog-content">
+        <div class="blog-text">
+            {{ post.content|safe }}
+        </div>
+    </div>
+
+    <!-- Partage social -->
+    <div class="social-sharing">
+        <h3 class="sharing-title">Partager cet article</h3>
+        <div class="sharing-buttons">
+            <a href="#" class="share-btn facebook" onclick="shareOnFacebook()">
+                <i class="fab fa-facebook-f"></i>
+                Facebook
+            </a>
+            <a href="#" class="share-btn twitter" onclick="shareOnTwitter()">
+                <i class="fab fa-twitter"></i>
+                Twitter
+            </a>
+            <a href="#" class="share-btn linkedin" onclick="shareOnLinkedIn()">
+                <i class="fab fa-linkedin-in"></i>
+                LinkedIn
+            </a>
+            <a href="#" class="share-btn whatsapp" onclick="shareOnWhatsApp()">
+                <i class="fab fa-whatsapp"></i>
+                WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Articles récents -->
+    {% if recent_posts %}
+    <div class="recent-posts">
+        <h3 class="recent-title">Articles récents</h3>
+        <div class="recent-grid">
+            {% for recent_post in recent_posts %}
+            <a href="{% url 'restaurant:blog_detail' recent_post.slug %}" class="recent-post-card">
+                <h4 class="recent-post-title">{{ recent_post.title }}</h4>
+                <p class="recent-post-excerpt">{{ recent_post.excerpt|default:recent_post.content|truncatewords:20 }}</p>
+                <div class="recent-post-date">{{ recent_post.created_at|date:"d/m/Y" }}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Fonctions de partage social
+function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ post.title }}');
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function shareOnTwitter() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ post.title }}');
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
+}
+
+function shareOnLinkedIn() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ post.title }}');
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+}
+
+function shareOnWhatsApp() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ post.title }}');
+    window.open(`https://wa.me/?text=${title}%20${url}`, '_blank');
+}
+
+// Animation des éléments au scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const animatedElements = document.querySelectorAll('.blog-hero, .blog-content, .social-sharing, .recent-posts');
+    
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}{{ page_title }} - {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="legal-page-section">
+    <div class="container">
+        <article class="legal-page-card">
+            <h1>{{ page_title }}</h1>
+            <p>{{ page_description }}</p>
+            <p>
+                Pour toute question concernant ces informations ou nos services, contactez directement
+                le restaurant.
+            </p>
+            {% if settings.email %}
+                <p><strong>Email :</strong> <a href="mailto:{{ settings.email }}">{{ settings.email }}</a></p>
+            {% endif %}
+            {% if settings.phone %}
+                <p><strong>Téléphone :</strong> <a href="tel:{{ settings.phone }}">{{ settings.phone }}</a></p>
+            {% endif %}
+            {% if settings.address %}
+                <p><strong>Adresse :</strong> {{ settings.address|linebreaksbr }}</p>
+            {% endif %}
+            <a class="content-btn content-btn-primary" href="{% url 'restaurant:contact' %}">
+                Nous contacter
+            </a>
+        </article>
+    </div>
+</section>
+{% endblock %}

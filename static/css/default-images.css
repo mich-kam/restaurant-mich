@@ -1,0 +1,263 @@
+/* ===== IMAGES PAR DÉFAUT ET PLACEHOLDERS ===== */
+
+/* Images par défaut avec placeholders modernes */
+.default-image-placeholder {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 500;
+    min-height: 200px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.default-image-placeholder::before {
+    content: '📷';
+    font-size: 3rem;
+    margin-bottom: 10px;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+}
+
+.default-image-placeholder::after {
+    content: 'Image en cours de chargement...';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Images de fond par défaut pour différentes sections */
+.default-hero-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.default-menu-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+.default-events-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+.default-about-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Images par défaut pour les plats */
+.default-dish-image {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.default-dish-image::before {
+    content: '🍽️';
+    font-size: 4rem;
+    opacity: 0.4;
+}
+
+.default-dish-image::after {
+    content: 'Plat délicieux';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Images par défaut pour les événements */
+.default-event-image {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.default-event-image::before {
+    content: '🎉';
+    font-size: 3rem;
+    opacity: 0.4;
+}
+
+.default-event-image::after {
+    content: 'Événement spécial';
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Images par défaut pour la galerie */
+.default-gallery-image {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.default-gallery-image::before {
+    content: '📸';
+    font-size: 3rem;
+    opacity: 0.4;
+}
+
+.default-gallery-image::after {
+    content: 'Photo du restaurant';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Images par défaut pour les profils */
+.default-profile-image {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.default-profile-image::before {
+    content: '👤';
+    font-size: 2rem;
+    opacity: 0.7;
+}
+
+/* Images par défaut pour les cartes */
+.default-card-image {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.default-card-image::before {
+    content: '🖼️';
+    font-size: 2.5rem;
+    opacity: 0.4;
+}
+
+/* Animation de chargement pour les images */
+.image-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Responsive design pour les images par défaut */
+@media (max-width: 768px) {
+
+    .default-image-placeholder,
+    .default-dish-image,
+    .default-event-image,
+    .default-gallery-image {
+        min-height: 150px;
+    }
+
+    .default-image-placeholder::before,
+    .default-dish-image::before,
+    .default-event-image::before,
+    .default-gallery-image::before {
+        font-size: 2rem;
+    }
+
+    .default-profile-image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .default-profile-image::before {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .default-image-placeholder,
+    .default-dish-image,
+    .default-event-image,
+    .default-gallery-image {
+        min-height: 120px;
+    }
+
+    .default-image-placeholder::before,
+    .default-dish-image::before,
+    .default-event-image::before,
+    .default-gallery-image::before {
+        font-size: 1.5rem;
+    }
+
+    .default-profile-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .default-profile-image::before {
+        font-size: 1.2rem;
+    }
+}

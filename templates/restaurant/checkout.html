@@ -1,0 +1,950 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}Checkout - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== CHECKOUT MODERNE ===== */
+
+:root {
+    --checkout-primary: #ff6b35;
+    --checkout-secondary: #764ba2;
+    --checkout-success: #48bb78;
+    --checkout-warning: #ed8936;
+    --checkout-error: #f56565;
+    --checkout-text: #2d3748;
+    --checkout-light: #718096;
+    --checkout-border: #e2e8f0;
+    --checkout-bg: #f7fafc;
+    --checkout-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --checkout-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-container {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.checkout-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--checkout-shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.checkout-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--checkout-text);
+    margin-bottom: 10px;
+}
+
+.checkout-subtitle {
+    color: var(--checkout-light);
+    font-size: 1.1rem;
+}
+
+.checkout-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.checkout-main {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--checkout-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.checkout-sidebar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--checkout-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--checkout-text);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--checkout-primary);
+}
+
+.form-section {
+    margin-bottom: 40px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--checkout-text);
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--checkout-text);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--checkout-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--checkout-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-input.error {
+    border-color: var(--checkout-error);
+}
+
+.form-input.success {
+    border-color: var(--checkout-success);
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--checkout-light);
+    transition: color 0.3s ease;
+}
+
+.form-input:focus + .input-icon {
+    color: var(--checkout-primary);
+}
+
+.error-message {
+    color: var(--checkout-error);
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+}
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.payment-method {
+    border: 2px solid var(--checkout-border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    background: white;
+}
+
+.payment-method:hover {
+    border-color: var(--checkout-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--checkout-shadow);
+}
+
+.payment-method.selected {
+    border-color: var(--checkout-primary);
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.payment-method-icon {
+    font-size: 2rem;
+    color: var(--checkout-primary);
+    margin-bottom: 10px;
+}
+
+.payment-method-name {
+    font-weight: 600;
+    color: var(--checkout-text);
+    margin-bottom: 5px;
+}
+
+.payment-method-desc {
+    color: var(--checkout-light);
+    font-size: 0.85rem;
+}
+
+.order-summary {
+    margin-bottom: 30px;
+}
+
+.order-items {
+    margin-bottom: 20px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--checkout-border);
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: var(--checkout-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--checkout-primary);
+}
+
+.item-info h4 {
+    font-weight: 600;
+    color: var(--checkout-text);
+    margin-bottom: 5px;
+}
+
+.item-info p {
+    color: var(--checkout-light);
+    font-size: 0.9rem;
+}
+
+.item-quantity {
+    background: var(--checkout-bg);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: var(--checkout-primary);
+}
+
+.item-price {
+    font-weight: 600;
+    color: var(--checkout-text);
+}
+
+.summary-totals {
+    border-top: 2px solid var(--checkout-border);
+    padding-top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.summary-row.total {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--checkout-primary);
+    border-top: 1px solid var(--checkout-border);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.checkout-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--checkout-primary) 0%, var(--checkout-secondary) 100%);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--checkout-shadow-lg);
+}
+
+.checkout-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.checkout-btn .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.checkout-btn.loading .spinner {
+    display: inline-block;
+}
+
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.security-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--checkout-light);
+    font-size: 0.85rem;
+}
+
+.security-badge i {
+    color: var(--checkout-success);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 15px;
+    }
+    
+    .checkout-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .checkout-sidebar {
+        position: static;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkout-title {
+        font-size: 2rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.checkout-header,
+.checkout-main,
+.checkout-sidebar {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.checkout-header { animation-delay: 0.1s; }
+.checkout-main { animation-delay: 0.2s; }
+.checkout-sidebar { animation-delay: 0.3s; }
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.success {
+    background: var(--checkout-success);
+}
+
+.toast.error {
+    background: var(--checkout-error);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <!-- Header du checkout -->
+    <div class="checkout-header">
+        <h1 class="checkout-title">Finaliser votre commande</h1>
+        <p class="checkout-subtitle">Remplissez vos informations pour compléter votre commande</p>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="checkout-content">
+        <!-- Formulaire principal -->
+        <div class="checkout-main">
+            <form id="checkoutForm">
+                <!-- Informations personnelles -->
+                <div class="form-section">
+                    <h2 class="section-title">Informations personnelles</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">Prénom</label>
+                            <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            <i class="fas fa-user input-icon"></i>
+                            <div class="error-message" id="firstNameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">Nom</label>
+                            <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            <i class="fas fa-user input-icon"></i>
+                            <div class="error-message" id="lastNameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <i class="fas fa-envelope input-icon"></i>
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" required>
+                            <i class="fas fa-phone input-icon"></i>
+                            <div class="error-message" id="phoneError"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adresse de livraison -->
+                <div class="form-section">
+                    <h2 class="section-title">Adresse de livraison</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="address">Adresse</label>
+                            <input type="text" id="address" name="address" class="form-input" required>
+                            <i class="fas fa-map-marker-alt input-icon"></i>
+                            <div class="error-message" id="addressError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="city">Ville</label>
+                            <input type="text" id="city" name="city" class="form-input" required>
+                            <i class="fas fa-city input-icon"></i>
+                            <div class="error-message" id="cityError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="postalCode">Code postal</label>
+                            <input type="text" id="postalCode" name="postalCode" class="form-input" required>
+                            <i class="fas fa-mail-bulk input-icon"></i>
+                            <div class="error-message" id="postalCodeError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="country">Pays</label>
+                            <input type="text" id="country" name="country" class="form-input" value="France" required>
+                            <i class="fas fa-flag input-icon"></i>
+                            <div class="error-message" id="countryError"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Méthode de paiement -->
+                <div class="form-section">
+                    <h2 class="section-title">Méthode de paiement</h2>
+                    <div class="payment-methods">
+                        <div class="payment-method selected" data-method="card">
+                            <div class="payment-method-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-method-name">Carte bancaire</div>
+                            <div class="payment-method-desc">Visa, Mastercard, American Express</div>
+                        </div>
+                        <div class="payment-method" data-method="paypal">
+                            <div class="payment-method-icon">
+                                <i class="fab fa-paypal"></i>
+                            </div>
+                            <div class="payment-method-name">PayPal</div>
+                            <div class="payment-method-desc">Paiement sécurisé</div>
+                        </div>
+                        <div class="payment-method" data-method="cash">
+                            <div class="payment-method-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="payment-method-name">Espèces</div>
+                            <div class="payment-method-desc">Paiement à la livraison</div>
+                        </div>
+                    </div>
+
+                    <!-- Formulaire de carte bancaire -->
+                    <div id="cardForm" class="card-form" style="margin-top: 20px;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="cardNumber">Numéro de carte</label>
+                                <input type="text" id="cardNumber" name="cardNumber" class="form-input" placeholder="1234 5678 9012 3456">
+                                <i class="fas fa-credit-card input-icon"></i>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardName">Nom sur la carte</label>
+                                <input type="text" id="cardName" name="cardName" class="form-input" placeholder="Jean Dupont">
+                                <i class="fas fa-user input-icon"></i>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardExpiry">Date d'expiration</label>
+                                <input type="text" id="cardExpiry" name="cardExpiry" class="form-input" placeholder="MM/AA">
+                                <i class="fas fa-calendar input-icon"></i>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardCvv">CVV</label>
+                                <input type="text" id="cardCvv" name="cardCvv" class="form-input" placeholder="123">
+                                <i class="fas fa-lock input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sidebar avec résumé -->
+        <div class="checkout-sidebar">
+            <h3 class="section-title">Résumé de la commande</h3>
+            
+            <div class="order-summary">
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-details">
+                            <div class="item-image">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="item-info">
+                                <h4>Burger Deluxe</h4>
+                                <p>Bœuf, fromage, salade</p>
+                            </div>
+                        </div>
+                        <div class="item-quantity">x2</div>
+                        <div class="item-price">18,00 €</div>
+                    </div>
+                    
+                    <div class="order-item">
+                        <div class="item-details">
+                            <div class="item-image">
+                                <i class="fas fa-french-fries"></i>
+                            </div>
+                            <div class="item-info">
+                                <h4>Frites maison</h4>
+                                <p>Portion moyenne</p>
+                            </div>
+                        </div>
+                        <div class="item-quantity">x1</div>
+                        <div class="item-price">4,50 €</div>
+                    </div>
+                    
+                    <div class="order-item">
+                        <div class="item-details">
+                            <div class="item-image">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                            <div class="item-info">
+                                <h4>Café expresso</h4>
+                                <p>Simple</p>
+                            </div>
+                        </div>
+                        <div class="item-quantity">x1</div>
+                        <div class="item-price">2,50 €</div>
+                    </div>
+                </div>
+                
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Sous-total</span>
+                        <span>25,00 €</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Livraison</span>
+                        <span>3,50 €</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>TVA</span>
+                        <span>5,70 €</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>34,20 €</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="checkout-btn" id="checkoutBtn" form="checkoutForm">
+                <span class="spinner"></span>
+                Payer 34,20 €
+            </button>
+            
+            <div class="security-badges">
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Paiement sécurisé</span>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>SSL 256-bit</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast notifications -->
+<div class="toast" id="toast"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+class CheckoutManager {
+    constructor() {
+        this.selectedPaymentMethod = 'card';
+        this.init();
+    }
+
+    init() {
+        this.setupPaymentMethods();
+        this.setupFormValidation();
+        this.setupCardFormatting();
+        this.setupFormSubmission();
+    }
+
+    setupPaymentMethods() {
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const cardForm = document.getElementById('cardForm');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                // Retirer la sélection précédente
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                method.classList.add('selected');
+                
+                this.selectedPaymentMethod = method.getAttribute('data-method');
+                
+                // Afficher/masquer le formulaire de carte
+                if (this.selectedPaymentMethod === 'card') {
+                    cardForm.style.display = 'block';
+                } else {
+                    cardForm.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    setupFormValidation() {
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => this.validateField(input));
+            input.addEventListener('input', () => this.clearFieldError(input));
+        });
+    }
+
+    setupCardFormatting() {
+        const cardNumber = document.getElementById('cardNumber');
+        const cardExpiry = document.getElementById('cardExpiry');
+        const cardCvv = document.getElementById('cardCvv');
+
+        if (cardNumber) {
+            cardNumber.addEventListener('input', (e) => this.formatCardNumber(e.target));
+        }
+
+        if (cardExpiry) {
+            cardExpiry.addEventListener('input', (e) => this.formatCardExpiry(e.target));
+        }
+
+        if (cardCvv) {
+            cardCvv.addEventListener('input', (e) => this.formatCardCvv(e.target));
+        }
+    }
+
+    setupFormSubmission() {
+        const form = document.getElementById('checkoutForm');
+        const submitBtn = document.getElementById('checkoutBtn');
+
+        form.addEventListener('submit', (e) => this.handleSubmit(e));
+    }
+
+    formatCardNumber(input) {
+        let value = input.value.replace(/\D/g, '');
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        input.value = value.substring(0, 19);
+    }
+
+    formatCardExpiry(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        input.value = value.substring(0, 5);
+    }
+
+    formatCardCvv(input) {
+        let value = input.value.replace(/\D/g, '');
+        input.value = value.substring(0, 4);
+    }
+
+    validateField(field) {
+        const value = field.value.trim();
+        const fieldName = field.name;
+        const errorElement = document.getElementById(fieldName + 'Error');
+        
+        // Réinitialiser les états
+        field.classList.remove('error', 'success');
+        if (errorElement) errorElement.style.display = 'none';
+        
+        let isValid = true;
+        let errorMessage = '';
+        
+        switch (fieldName) {
+            case 'firstName':
+            case 'lastName':
+                if (value.length < 2) {
+                    isValid = false;
+                    errorMessage = 'Ce champ doit contenir au moins 2 caractères';
+                }
+                break;
+                
+            case 'email':
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Veuillez entrer une adresse email valide';
+                }
+                break;
+                
+            case 'phone':
+                const phoneRegex = /^\d{2}\s\d{2}\s\d{2}\s\d{2}$/;
+                if (!phoneRegex.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Veuillez entrer un numéro de téléphone valide';
+                }
+                break;
+                
+            case 'address':
+                if (value.length < 5) {
+                    isValid = false;
+                    errorMessage = 'Veuillez entrer une adresse complète';
+                }
+                break;
+                
+            case 'city':
+                if (value.length < 2) {
+                    isValid = false;
+                    errorMessage = 'Veuillez entrer une ville valide';
+                }
+                break;
+                
+            case 'postalCode':
+                const postalRegex = /^\d{5}$/;
+                if (!postalRegex.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Veuillez entrer un code postal valide';
+                }
+                break;
+                
+            case 'cardNumber':
+                if (this.selectedPaymentMethod === 'card') {
+                    const cardRegex = /^\d{4}\s\d{4}\s\d{4}\s\d{4}$/;
+                    if (!cardRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Veuillez entrer un numéro de carte valide';
+                    }
+                }
+                break;
+                
+            case 'cardExpiry':
+                if (this.selectedPaymentMethod === 'card') {
+                    const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+                    if (!expiryRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Format: MM/AA';
+                    }
+                }
+                break;
+                
+            case 'cardCvv':
+                if (this.selectedPaymentMethod === 'card') {
+                    const cvvRegex = /^\d{3,4}$/;
+                    if (!cvvRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'CVV invalide';
+                    }
+                }
+                break;
+        }
+        
+        if (!isValid) {
+            field.classList.add('error');
+            if (errorElement) {
+                errorElement.textContent = errorMessage;
+                errorElement.style.display = 'block';
+            }
+        } else {
+            field.classList.add('success');
+        }
+        
+        return isValid;
+    }
+
+    clearFieldError(field) {
+        field.classList.remove('error');
+        const errorElement = document.getElementById(field.name + 'Error');
+        if (errorElement) errorElement.style.display = 'none';
+    }
+
+    validateForm() {
+        const requiredFields = this.form.querySelectorAll('.form-input[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!this.validateField(field)) {
+                isValid = false;
+            }
+        });
+        
+        // Validation spécifique pour la carte bancaire
+        if (this.selectedPaymentMethod === 'card') {
+            const cardFields = ['cardNumber', 'cardName', 'cardExpiry', 'cardCvv'];
+            cardFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field && !this.validateField(field)) {
+                    isValid = false;
+                }
+            });
+        }
+        
+        return isValid;
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+        
+        if (!this.validateForm()) {
+            this.showToast('Veuillez corriger les erreurs dans le formulaire', 'error');
+            return;
+        }
+        
+        this.setLoading(true);
+        
+        try {
+            // Simulation d'une requête API
+            await this.simulatePayment();
+            
+            this.showToast('Paiement traité avec succès ! Redirection...', 'success');
+            
+            // Redirection vers la page de succès
+            setTimeout(() => {
+                window.location.href = '{% url "restaurant:order_success" 1234 %}';
+            }, 2000);
+            
+        } catch (error) {
+            this.showToast('Erreur lors du traitement du paiement', 'error');
+        } finally {
+            this.setLoading(false);
+        }
+    }
+
+    setLoading(loading) {
+        const submitBtn = document.getElementById('checkoutBtn');
+        if (loading) {
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+        }
+    }
+
+    simulatePayment() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Simulation d'une erreur aléatoire (15% de chance)
+                if (Math.random() < 0.15) {
+                    reject(new Error('Erreur de paiement'));
+                } else {
+                    resolve();
+                }
+            }, 3000);
+        });
+    }
+
+    showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 5000);
+    }
+}
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    new CheckoutManager();
+});
+</script>
+{% endblock %}
+

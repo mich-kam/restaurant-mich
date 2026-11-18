@@ -1,0 +1,807 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block title %}Mon Profil - {{ settings.site_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== PROFILE MODERNE ===== */
+
+:root {
+    --profile-primary: #ff6b35;
+    --profile-secondary: #764ba2;
+    --profile-success: #48bb78;
+    --profile-warning: #ed8936;
+    --profile-error: #f56565;
+    --profile-text: #2d3748;
+    --profile-light: #718096;
+    --profile-border: #e2e8f0;
+    --profile-bg: #f7fafc;
+    --profile-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --profile-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.profile-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--profile-shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--profile-primary) 0%, var(--profile-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 3rem;
+    color: white;
+    font-weight: 700;
+    box-shadow: var(--profile-shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-avatar::before {
+    content: '👤';
+    font-size: 3rem;
+    opacity: 0.8;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--profile-text);
+    margin-bottom: 10px;
+}
+
+.profile-email {
+    color: var(--profile-light);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: var(--profile-bg);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid var(--profile-border);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--profile-primary);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: var(--profile-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+.profile-sidebar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--profile-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: fit-content;
+}
+
+.sidebar-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--profile-text);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--profile-primary);
+}
+
+.nav-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-tab {
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--profile-text);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid transparent;
+}
+
+.nav-tab:hover {
+    background: var(--profile-bg);
+    transform: translateX(5px);
+    text-decoration: none;
+    color: var(--profile-text);
+}
+
+.nav-tab.active {
+    background: linear-gradient(135deg, var(--profile-primary) 0%, var(--profile-secondary) 100%);
+    color: white;
+    border-color: var(--profile-primary);
+}
+
+.nav-tab i {
+    font-size: 1.1rem;
+    width: 20px;
+}
+
+.profile-main {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--profile-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--profile-text);
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--profile-primary);
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--profile-text);
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--profile-text);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--profile-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--profile-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.save-btn {
+    background: linear-gradient(135deg, var(--profile-primary) 0%, var(--profile-secondary) 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--profile-shadow-lg);
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-card {
+    background: var(--profile-bg);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid var(--profile-border);
+    transition: all 0.3s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--profile-shadow);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.order-number {
+    font-weight: 600;
+    color: var(--profile-text);
+    font-size: 1.1rem;
+}
+
+.order-date {
+    color: var(--profile-light);
+    font-size: 0.9rem;
+}
+
+.order-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.order-status.pending {
+    background: rgba(237, 137, 54, 0.1);
+    color: var(--profile-warning);
+}
+
+.order-status.completed {
+    background: rgba(72, 187, 120, 0.1);
+    color: var(--profile-success);
+}
+
+.order-status.cancelled {
+    background: rgba(245, 101, 101, 0.1);
+    color: var(--profile-error);
+}
+
+.order-total {
+    font-weight: 600;
+    color: var(--profile-primary);
+    font-size: 1.1rem;
+}
+
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.preference-item {
+    background: var(--profile-bg);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--profile-border);
+    text-align: center;
+}
+
+.preference-icon {
+    font-size: 2rem;
+    color: var(--profile-primary);
+    margin-bottom: 15px;
+}
+
+.preference-title {
+    font-weight: 600;
+    color: var(--profile-text);
+    margin-bottom: 10px;
+}
+
+.preference-value {
+    color: var(--profile-light);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 15px;
+    }
+    
+    .profile-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .profile-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .preferences-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-header,
+.profile-sidebar,
+.profile-main {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.profile-header { animation-delay: 0.1s; }
+.profile-sidebar { animation-delay: 0.2s; }
+.profile-main { animation-delay: 0.3s; }
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.success {
+    background: var(--profile-success);
+}
+
+.toast.error {
+    background: var(--profile-error);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Header du profil -->
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+        </div>
+        <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
+        <p class="profile-email">{{ user.email }}</p>
+        
+        <div class="profile-stats">
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Commandes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Réservations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">150</div>
+                <div class="stat-label">Points fidélité</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4.8</div>
+                <div class="stat-label">Note moyenne</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="profile-content">
+        <!-- Sidebar de navigation -->
+        <div class="profile-sidebar">
+            <h3 class="sidebar-title">Navigation</h3>
+            <div class="nav-tabs">
+                <a href="#profile" class="nav-tab active" data-tab="profile">
+                    <i class="fas fa-user"></i>
+                    Profil
+                </a>
+                <a href="#orders" class="nav-tab" data-tab="orders">
+                    <i class="fas fa-shopping-bag"></i>
+                    Commandes
+                </a>
+                <a href="#reservations" class="nav-tab" data-tab="reservations">
+                    <i class="fas fa-calendar-alt"></i>
+                    Réservations
+                </a>
+                <a href="#preferences" class="nav-tab" data-tab="preferences">
+                    <i class="fas fa-cog"></i>
+                    Préférences
+                </a>
+                <a href="#security" class="nav-tab" data-tab="security">
+                    <i class="fas fa-shield-alt"></i>
+                    Sécurité
+                </a>
+            </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="profile-main">
+            <!-- Onglet Profil -->
+            <div id="profile" class="tab-content active">
+                <h2 class="tab-title">Informations personnelles</h2>
+                
+                <form id="profileForm">
+                    <div class="form-section">
+                        <h3 class="section-title">Informations de base</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">Prénom</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" value="{{ user.first_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Nom</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" value="{{ user.last_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" value="{{ user.email }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Téléphone</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" value="06 12 34 56 78">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Adresse</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="address">Adresse</label>
+                                <input type="text" id="address" name="address" class="form-input" value="123 Rue de la Paix">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="city">Ville</label>
+                                <input type="text" id="city" name="city" class="form-input" value="Paris">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="postalCode">Code postal</label>
+                                <input type="text" id="postalCode" name="postalCode" class="form-input" value="75001">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="country">Pays</label>
+                                <input type="text" id="country" name="country" class="form-input" value="France">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="save-btn">Sauvegarder les modifications</button>
+                </form>
+            </div>
+
+            <!-- Onglet Commandes -->
+            <div id="orders" class="tab-content">
+                <h2 class="tab-title">Mes commandes</h2>
+                
+                <div class="orders-list">
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">Commande #1234</div>
+                                <div class="order-date">15 janvier 2024</div>
+                            </div>
+                            <span class="order-status completed">Terminée</span>
+                        </div>
+                        <div class="order-total">Total: 45,50 €</div>
+                    </div>
+                    
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">Commande #1233</div>
+                                <div class="order-date">12 janvier 2024</div>
+                            </div>
+                            <span class="order-status pending">En cours</span>
+                        </div>
+                        <div class="order-total">Total: 32,80 €</div>
+                    </div>
+                    
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">Commande #1232</div>
+                                <div class="order-date">10 janvier 2024</div>
+                            </div>
+                            <span class="order-status cancelled">Annulée</span>
+                        </div>
+                        <div class="order-total">Total: 28,90 €</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Réservations -->
+            <div id="reservations" class="tab-content">
+                <h2 class="tab-title">Mes réservations</h2>
+                
+                <div class="orders-list">
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">Réservation #567</div>
+                                <div class="order-date">20 janvier 2024 - 19h30</div>
+                            </div>
+                            <span class="order-status completed">Confirmée</span>
+                        </div>
+                        <div class="order-total">4 personnes - Table 12</div>
+                    </div>
+                    
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">Réservation #566</div>
+                                <div class="order-date">18 janvier 2024 - 20h00</div>
+                            </div>
+                            <span class="order-status pending">En attente</span>
+                        </div>
+                        <div class="order-total">2 personnes - Table 8</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Préférences -->
+            <div id="preferences" class="tab-content">
+                <h2 class="tab-title">Mes préférences</h2>
+                
+                <div class="preferences-grid">
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="preference-title">Cuisine préférée</div>
+                        <div class="preference-value">Française</div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="preference-title">Régime alimentaire</div>
+                        <div class="preference-value">Aucune restriction</div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="preference-title">Notifications</div>
+                        <div class="preference-value">Activées</div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="preference-title">Langue</div>
+                        <div class="preference-value">Français</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Sécurité -->
+            <div id="security" class="tab-content">
+                <h2 class="tab-title">Sécurité du compte</h2>
+                
+                <form id="securityForm">
+                    <div class="form-section">
+                        <h3 class="section-title">Changer le mot de passe</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="currentPassword">Mot de passe actuel</label>
+                                <input type="password" id="currentPassword" name="currentPassword" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="newPassword">Nouveau mot de passe</label>
+                                <input type="password" id="newPassword" name="newPassword" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="confirmNewPassword">Confirmer le nouveau mot de passe</label>
+                                <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="save-btn">Changer le mot de passe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast notifications -->
+<div class="toast" id="toast"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+class ProfileManager {
+    constructor() {
+        this.currentTab = 'profile';
+        this.init();
+    }
+
+    init() {
+        this.setupTabNavigation();
+        this.setupFormHandlers();
+    }
+
+    setupTabNavigation() {
+        const tabs = document.querySelectorAll('.nav-tab');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetTab = tab.getAttribute('data-tab');
+                this.switchTab(targetTab);
+            });
+        });
+    }
+
+    switchTab(tabName) {
+        // Mettre à jour les onglets
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        // Mettre à jour le contenu
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(tabName).classList.add('active');
+
+        this.currentTab = tabName;
+    }
+
+    setupFormHandlers() {
+        const profileForm = document.getElementById('profileForm');
+        const securityForm = document.getElementById('securityForm');
+
+        if (profileForm) {
+            profileForm.addEventListener('submit', (e) => this.handleProfileSubmit(e));
+        }
+
+        if (securityForm) {
+            securityForm.addEventListener('submit', (e) => this.handleSecuritySubmit(e));
+        }
+    }
+
+    async handleProfileSubmit(e) {
+        e.preventDefault();
+        
+        try {
+            // Simulation d'une requête API
+            await this.simulateApiCall();
+            this.showToast('Profil mis à jour avec succès !', 'success');
+        } catch (error) {
+            this.showToast('Erreur lors de la mise à jour du profil', 'error');
+        }
+    }
+
+    async handleSecuritySubmit(e) {
+        e.preventDefault();
+        
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmNewPassword').value;
+        
+        if (newPassword !== confirmPassword) {
+            this.showToast('Les mots de passe ne correspondent pas', 'error');
+            return;
+        }
+        
+        if (newPassword.length < 8) {
+            this.showToast('Le mot de passe doit contenir au moins 8 caractères', 'error');
+            return;
+        }
+        
+        try {
+            await this.simulateApiCall();
+            this.showToast('Mot de passe changé avec succès !', 'success');
+            e.target.reset();
+        } catch (error) {
+            this.showToast('Erreur lors du changement de mot de passe', 'error');
+        }
+    }
+
+    simulateApiCall() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Simulation d'une erreur aléatoire (10% de chance)
+                if (Math.random() < 0.1) {
+                    reject(new Error('Erreur réseau'));
+                } else {
+                    resolve();
+                }
+            }, 1500);
+        });
+    }
+
+    showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 5000);
+    }
+}
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    new ProfileManager();
+});
+</script>
+{% endblock %}

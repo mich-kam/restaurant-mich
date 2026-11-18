@@ -1,0 +1,590 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Gallery Section -->
+<section class="gallery-section" style="padding: 120px 0 80px;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Our Gallery</h2>
+            <p class="section-subtitle">Take a look at our delicious dishes and beautiful restaurant</p>
+        </div>
+        
+                {% if gallery_items %}
+            <div class="gallery-grid">
+                {% for item in gallery_items %}
+                <div class="gallery-item image-card" onclick="openLightbox('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80', '{{ item.title }}', '{{ item.description|default:"" }}')">
+                    <div class="default-image-placeholder" style="height: 250px;">
+                        <span>{{ item.title|default:"Photo du restaurant" }}</span>
+                    </div>
+                    <div class="image-overlay">
+                        <h3>{{ item.title }}</h3>
+                        {% if item.description %}
+                            <p>{{ item.description|truncatewords:10 }}</p>
+                        {% endif %}
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Images supplémentaires pour démonstration -->
+            <div class="image-grid image-grid-3" style="margin-top: 40px;">
+                <div class="image-card image-with-badge">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Ambiance restaurant">
+                    <div class="image-badge">Nouveau</div>
+                    <div class="image-overlay">
+                        <h3>Ambiance Élégante</h3>
+                        <p>Notre salle principale avec une décoration moderne</p>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Plat signature">
+                    <div class="image-overlay">
+                        <h3>Plat Signature</h3>
+                        <p>Notre spécialité préparée par notre chef</p>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Terrasse">
+                    <div class="image-overlay">
+                        <h3>Terrasse</h3>
+                        <p>Profitez de nos plats en plein air</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mosaïque d'images -->
+            <div class="mosaic-grid" style="margin-top: 40px;">
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cuisine">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Pizza">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Salade">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Dessert">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Bar">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Plat">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Extérieur">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Salle">
+                </div>
+                <div class="mosaic-item">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Événement">
+                </div>
+            </div>
+            
+            <!-- Gallery Categories -->
+            <div class="gallery-categories">
+                <h3>Catégories</h3>
+                <div class="category-buttons">
+                    <button class="category-btn active" data-category="all">Tous</button>
+                    <button class="category-btn" data-category="food">Plats</button>
+                    <button class="category-btn" data-category="drinks">Boissons</button>
+                    <button class="category-btn" data-category="ambiance">Ambiance</button>
+                    <button class="category-btn" data-category="events">Événements</button>
+                </div>
+            </div>
+            
+            <!-- Gallery Stats -->
+            <div class="gallery-stats">
+                <div class="stat-card">
+                    <i class="fas fa-images"></i>
+                    <span class="stat-number">{{ gallery_items.count }}</span>
+                    <span class="stat-label">Photos</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-eye"></i>
+                    <span class="stat-number">1,234</span>
+                    <span class="stat-label">Vues</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-heart"></i>
+                    <span class="stat-number">567</span>
+                    <span class="stat-label">Likes</span>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            {% if gallery_items.has_other_pages %}
+            <div class="pagination-wrapper">
+                <nav class="pagination">
+                    {% if gallery_items.has_previous %}
+                        <a href="?page={{ gallery_items.previous_page_number }}" class="page-link">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    {% endif %}
+                    
+                    {% for num in gallery_items.paginator.page_range %}
+                        {% if gallery_items.number == num %}
+                            <span class="page-link active">{{ num }}</span>
+                        {% elif num > gallery_items.number|add:'-3' and num < gallery_items.number|add:'3' %}
+                            <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if gallery_items.has_next %}
+                        <a href="?page={{ gallery_items.next_page_number }}" class="page-link">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    {% endif %}
+                </nav>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="no-gallery">
+                <div class="no-gallery-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <h3>No gallery items yet</h3>
+                <p>We're working on adding beautiful photos. Check back soon!</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </button>
+        <img id="lightbox-image" src="" alt="">
+        <div class="lightbox-info">
+            <h3 id="lightbox-title"></h3>
+            <p id="lightbox-description"></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.gallery-section {
+    background: #f8f9fa;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.gallery-categories {
+    text-align: center;
+    margin: 40px 0;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-categories h3 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.category-btn {
+    padding: 10px 20px;
+    border: 2px solid #ff6b35;
+    background: transparent;
+    color: #ff6b35;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background: #ff6b35;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.gallery-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 40px 0;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: #ff6b35;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.section-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    aspect-ratio: 1;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-info {
+    text-align: center;
+    color: white;
+    padding: 1rem;
+}
+
+.gallery-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.gallery-info p {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.gallery-info i {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.lightbox-close:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+#lightbox-image {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+.lightbox-info {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.lightbox-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.lightbox-info p {
+    margin: 0;
+    color: #666;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.page-link {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.page-link:hover {
+    background: #FF6B35;
+    color: white;
+    border-color: #FF6B35;
+}
+
+.page-link.active {
+    background: #FF6B35;
+    color: white;
+    border-color: #FF6B35;
+}
+
+.no-gallery {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.no-gallery-icon {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+}
+
+.no-gallery h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.no-gallery p {
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .lightbox-content {
+        max-width: 95%;
+        max-height: 95%;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+function openLightbox(imageSrc, title, description) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxDescription = document.getElementById('lightbox-description');
+    
+    lightboxImage.src = imageSrc;
+    lightboxTitle.textContent = title;
+    lightboxDescription.textContent = description;
+    
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Close lightbox with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeLightbox();
+    }
+});
+
+// Gestion des catégories de galerie
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+            
+            // Mettre à jour les boutons actifs
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filtrer les éléments de galerie
+            galleryItems.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.5s ease-in-out';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Animation des cartes de statistiques
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('animate-fadeInUp');
+    });
+    
+    // Lazy loading des images
+    const lazyImages = document.querySelectorAll('.image-lazy');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src || img.src;
+                img.classList.add('loaded');
+                observer.unobserve(img);
+            }
+        });
+    });
+    
+    lazyImages.forEach(img => {
+        imageObserver.observe(img);
+    });
+    
+    // Animation des cartes d'images au scroll
+    const imageCards = document.querySelectorAll('.image-card');
+    const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    imageCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        cardObserver.observe(card);
+    });
+});
+</script>
+{% endblock %} 

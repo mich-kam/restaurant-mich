@@ -1,0 +1,769 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+{% load image_tags %}
+
+{% block title %}{{ settings.site_name }} - Accueil{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialisation spécifique à la page d'accueil
+document.addEventListener('DOMContentLoaded', function() {
+    // Améliorer l'expérience utilisateur pour les boutons
+    const heroButtons = document.querySelectorAll('.btn-hero');
+    heroButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Animation de feedback
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+    
+    // Améliorer l'expérience pour les boutons d'événements
+    const eventButtons = document.querySelectorAll('.btn-view-events');
+    eventButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Animation de feedback
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+    
+    // Animation au scroll pour les cartes
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    // Observer les cartes de fonctionnalités et d'événements
+    const cards = document.querySelectorAll('.feature-card, .event-preview-card');
+    cards.forEach(card => observer.observe(card));
+    
+    // Effet de parallaxe pour l'image d'arrière-plan
+    const heroBackground = document.querySelector('.hero-background img');
+    if (heroBackground) {
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            heroBackground.style.transform = `translateY(${rate}px)`;
+        });
+    }
+    
+    // Animation des icônes au survol
+    const featureIcons = document.querySelectorAll('.feature-icon i');
+    featureIcons.forEach(icon => {
+        icon.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.2) rotate(5deg)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        icon.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1) rotate(0deg)';
+        });
+    });
+});
+
+// Fonction pour le smooth scroll vers les sections
+function smoothScrollTo(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Fonction pour afficher les notifications
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
+        position: relative;
+    }
+    
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    
+    .hero-background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: -1;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-hero {
+        padding: 15px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .btn-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s;
+    }
+
+    .btn-primary-hero {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        border: 2px solid #ff6b35;
+    }
+
+    .btn-primary-hero:hover {
+        background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
+        border-color: #f7931e;
+        color: white;
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-primary-hero:hover::before {
+        left: 100%;
+    }
+
+    .btn-secondary-hero {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary-hero:hover {
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        border-color: white;
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary-hero:hover::before {
+        left: 100%;
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .feature-card {
+        text-align: center;
+        padding: 40px 20px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .feature-card:hover::before {
+        opacity: 1;
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: #ff6b35;
+        margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #333;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .feature-card p {
+        color: #666;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* About Section */
+    .about-section {
+        padding: 80px 0;
+    }
+
+    .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .about-text h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #333;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .about-text p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #666;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .about-image {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .about-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    }
+
+    .about-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Events Preview */
+    .events-preview {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+    }
+
+    .events-preview h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 50px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .event-preview-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        position: relative;
+    }
+
+    .event-preview-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 2;
+    }
+
+    .event-preview-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+    }
+
+    .event-preview-card:hover::before {
+        opacity: 1;
+    }
+
+    .event-preview-image {
+        height: 200px;
+        background-color: #f8f9fa;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-preview-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .event-preview-card:hover .event-preview-image img {
+        transform: scale(1.05);
+    }
+
+    .event-preview-content {
+        padding: 25px;
+        color: #333;
+    }
+
+    .event-preview-content h4 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: #333;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .event-preview-content p {
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .btn-view-events {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+    .btn-view-events::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s;
+    }
+
+    .btn-view-events:hover {
+        background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
+        color: white;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 12px 30px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-view-events:hover::before {
+        left: 100%;
+    }
+
+    /* Section Titles */
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .section-title p {
+        color: #666;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* Animations d'entrée */
+    .hero-content {
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .feature-card {
+        animation: fadeInUp 0.8s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .event-preview-card {
+        animation: fadeInUp 0.8s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .event-preview-card:nth-child(1) { animation-delay: 0.1s; }
+    .event-preview-card:nth-child(2) { animation-delay: 0.2s; }
+    .event-preview-card:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 80px 0;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            padding: 0 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            padding: 0 20px;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .btn-hero {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .features-section,
+        .about-section,
+        .events-preview {
+            padding: 60px 0;
+        }
+
+        .about-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            padding: 0 20px;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            padding: 0 20px;
+        }
+
+        .events-preview h2 {
+            font-size: 2rem;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            padding: 30px 20px;
+        }
+
+        .event-preview-content {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+
+        .about-text h2 {
+            font-size: 1.8rem;
+        }
+
+        .events-preview h2 {
+            font-size: 1.8rem;
+        }
+
+        .feature-card {
+            padding: 25px 15px;
+        }
+
+        .event-preview-content {
+            padding: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-background">
+        <img src="{% get_hero_image_url 'home' %}" alt="Restaurant ambiance" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#999; font-size:3rem;\'>🍽️</div>'">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="container">
+        <div class="hero-content">
+            <h1>Bienvenue chez {{ settings.site_name }}</h1>
+            <p>Découvrez une expérience culinaire exceptionnelle avec nos plats préparés par des chefs passionnés</p>
+            <div class="hero-buttons">
+                <a href="{% url 'restaurant:menu' %}" class="btn-hero btn-primary-hero">Voir notre menu</a>
+                <a href="{% url 'restaurant:contact' %}" class="btn-hero btn-secondary-hero">Réserver une table</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Pourquoi nous choisir ?</h2>
+            <p>Notre engagement envers l'excellence culinaire et le service client</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Cuisine d'exception</h3>
+                    <p>Nos chefs talentueux créent des plats uniques avec des ingrédients frais et de qualité</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Service premium</h3>
+                    <p>Un service attentionné et professionnel pour vous offrir une expérience mémorable</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Ambiance chaleureuse</h3>
+                    <p>Un cadre élégant et convivial pour partager de délicieux moments en famille ou entre amis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Notre histoire</h2>
+                <p>Depuis plus de 15 ans, {{ settings.site_name }} s'engage à offrir une expérience culinaire exceptionnelle. Notre passion pour la gastronomie nous pousse à créer des plats uniques qui éveillent tous vos sens.</p>
+                <p>Nous sélectionnons avec soin les meilleurs ingrédients locaux et saisonniers pour garantir fraîcheur et authenticité dans chaque assiette.</p>
+                <a href="{% url 'restaurant:about' %}" class="btn-view-events">En savoir plus</a>
+            </div>
+            <div class="about-image">
+                <img src="{% static 'images/about-restaurant.jpg' %}" alt="Notre restaurant" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events Preview -->
+<section class="events-preview">
+    <div class="container">
+        <h2>Nos événements spéciaux</h2>
+        <div class="row">
+            {% for event in featured_events|slice:":3" %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="event-preview-card">
+                    <div class="event-preview-image">
+                        <img src="{{ event|get_image_url:'events' }}" alt="{{ event.title }}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#999; font-size:3rem;\'>📅</div>'">
+                    </div>
+                    <div class="event-preview-content">
+                        <h4>{{ event.title }}</h4>
+                        <p>{{ event.description|truncatewords:15 }}</p>
+                        <a href="{% url 'restaurant:event_detail' event.id %}" class="btn-view-events">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>Aucun événement pour le moment. Revenez bientôt !</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'restaurant:events' %}" class="btn-hero btn-secondary-hero">Voir tous nos événements</a>
+        </div>
+    </div>
+</section>
+{% endblock %} 

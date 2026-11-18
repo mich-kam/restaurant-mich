@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f1419">
+    <meta name="color-scheme" content="dark">
+    <script>
+        (function() {
+            try {
+                const stored = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = stored === 'light' || stored === 'dark' ? stored : (prefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.style.colorScheme = theme;
+                document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', theme);
+                document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f1419' : '#ff6b35');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.style.colorScheme = 'dark';
+            }
+        })();
+    </script>
+    <title>{% block title %}{{ settings.site_name }} - We Serve The Test You Love {% endblock %}</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}?v=20261007">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20261007">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}?v=20261007">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}?v=20261016">
+    <link rel="stylesheet" href="{% static 'css/header-animations.css' %}?v=20261007">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}?v=20261017">
+    <link rel="stylesheet" href="{% static 'css/image-layout.css' %}?v=20261007">
+    <link rel="stylesheet" href="{% static 'css/default-images.css' %}?v=20261007">
+    
+    {% block extra_css %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/theme-contrast.css' %}?v=20261010">
+    
+    <!-- JavaScript -->
+    <script defer src="{% static 'js/main.js' %}?v=20261015"></script>
+    <script defer src="{% static 'js/cart.js' %}?v=20261007"></script>
+    <script defer src="{% static 'js/header-effects.js' %}?v=20261010"></script>
+    <script defer src="{% static 'js/cart-badge.js' %}?v=20261007"></script>
+    <script defer src="{% static 'js/theme-manager.js' %}?v=20261007"></script>
+    <script defer src="{% static 'js/service-links.js' %}?v=20261007"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="{% url 'restaurant:home' %}">
+                        <div class="logo-container">
+                            <div class="logo-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <h2 class="site-name">{{ settings.site_name }}</h2>
+                        </div>
+                    </a>
+                </div>
+                <nav class="nav-menu" id="nav-menu">
+                    <ul>
+                    <li><a href="{% url 'restaurant:home' %}">Accueil</a></li>
+                    <li><a href="{% url 'restaurant:menu' %}">Menu</a></li>
+                    <li><a href="{% url 'restaurant:about' %}">À propos</a></li>
+                    <li><a href="{% url 'restaurant:blog' %}">Blog</a></li>
+                    <li><a href="{% url 'restaurant:gallery' %}">Galerie</a></li>
+                    <li><a href="{% url 'restaurant:events' %}">Événements</a></li>
+                    <li><a href="{% url 'restaurant:contact' %}">Contact</a></li>
+                    {% if not user.is_authenticated %}
+                    <li class="mobile-nav-account"><a href="{% url 'restaurant:register' %}">S'inscrire</a></li>
+                    {% endif %}
+                    <li class="mobile-nav-action"><a href="{% url 'restaurant:reservation' %}">Réserver une table</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <a href="{% url 'restaurant:cart' %}" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge empty">0</span>
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'restaurant:profile' %}" class="user-link">
+                            <i class="fas fa-user"></i>
+                            <span class="username-text">{{ user.username }}</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'restaurant:register' %}" class="btn-secondary">S'inscrire</a>
+                    {% endif %}
+                    <button 
+                        type="button"
+                        class="theme-toggle" 
+                        id="theme-toggle" 
+                        title="Passer au mode sombre"
+                        aria-label="Changer le thème"
+                        aria-pressed="false"
+                        role="switch"
+                        aria-checked="false">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                    </button>
+                    <a class="reserve-btn" href="{% url 'restaurant:reservation' %}">
+                        <span>Réserver une table</span>
+                    </a>
+                </div>
+                <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Ouvrir le menu" aria-controls="nav-menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer Moderne -->
+    <footer class="footer-modern">
+        <div class="container">
+            <!-- Section principale du footer -->
+            <div class="footer-main">
+                <!-- Logo et description -->
+                <div class="footer-brand">
+                    <div class="footer-logo-modern">
+                        <div class="footer-logo-icon-modern">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="footer-site-name-modern">{{ settings.site_name }}</h3>
+                    </div>
+                    <p class="footer-description-modern">
+                        Découvrez une expérience culinaire exceptionnelle dans un cadre moderne et accueillant. 
+                        Nos chefs passionnés créent des plats uniques avec des ingrédients frais et de qualité.
+                    </p>
+                    <div class="newsletter-modern" id="newsletter">
+                        <h3>S'abonner à notre newsletter</h3>
+                        <form class="newsletter-form-modern" action="{% url 'restaurant:newsletter_subscribe' %}" method="post">
+                            {% csrf_token %}
+                            <label class="visually-hidden" for="newsletter-email">Votre adresse e-mail</label>
+                            <input id="newsletter-email" name="email" type="email" placeholder="Votre adresse e-mail" autocomplete="email" required>
+                            <button type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                                S'abonner
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Navigation rapide -->
+                <div class="footer-section-modern">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="{% url 'restaurant:home' %}"><i class="fas fa-home"></i>Accueil</a></li>
+                        <li><a href="{% url 'restaurant:menu' %}"><i class="fas fa-utensils"></i>Menu</a></li>
+                        <li><a href="{% url 'restaurant:about' %}"><i class="fas fa-info-circle"></i>À propos</a></li>
+                        <li><a href="{% url 'restaurant:contact' %}"><i class="fas fa-envelope"></i>Contact</a></li>
+                        <li><a href="{% url 'restaurant:events' %}"><i class="fas fa-calendar-alt"></i>Événements</a></li>
+                        <li><a href="{% url 'restaurant:gallery' %}"><i class="fas fa-images"></i>Galerie</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div class="footer-section-modern">
+                    <h3>Nos Services</h3>
+                    <ul>
+                        <li><a href="{% url 'restaurant:menu' %}" class="service-link" data-service="commande">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="service-text">
+                                <strong>Commande en ligne</strong>
+                                <small>Livraison rapide & sécurisée</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:reservation' %}" class="service-link" data-service="reservation">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="service-text">
+                                <strong>Réservation</strong>
+                                <small>Table en ligne 24h/24</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:delivery' %}" class="service-link" data-service="livraison">
+                            <i class="fas fa-truck"></i>
+                            <span class="service-text">
+                                <strong>Livraison</strong>
+                                <small>À domicile & au bureau</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:private_events' %}" class="service-link" data-service="evenements">
+                            <i class="fas fa-users"></i>
+                            <span class="service-text">
+                                <strong>Événements privés</strong>
+                                <small>Mariages, anniversaires, séminaires</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:cooking_classes' %}" class="service-link" data-service="cours">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span class="service-text">
+                                <strong>Cours de cuisine</strong>
+                                <small>Ateliers avec nos chefs</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:gift_cards' %}" class="service-link" data-service="cadeaux">
+                            <i class="fas fa-gift"></i>
+                            <span class="service-text">
+                                <strong>Cartes cadeaux</strong>
+                                <small>Offrez une expérience unique</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:catering' %}" class="service-link" data-service="traiteur">
+                            <i class="fas fa-utensils"></i>
+                            <span class="service-text">
+                                <strong>Traiteur</strong>
+                                <small>Événements sur mesure</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:wine_tasting' %}" class="service-link" data-service="degustation">
+                            <i class="fas fa-wine-glass-alt"></i>
+                            <span class="service-text">
+                                <strong>Dégustation</strong>
+                                <small>Vins & spiritueux d'exception</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:faq' %}" class="service-link" data-service="aide">
+                            <i class="fas fa-question-circle"></i>
+                            <span class="service-text">
+                                <strong>FAQ & Aide</strong>
+                                <small>Questions fréquentes</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:loyalty' %}" class="service-link" data-service="fidelite">
+                            <i class="fas fa-star"></i>
+                            <span class="service-text">
+                                <strong>Programme fidélité</strong>
+                                <small>Points & avantages exclusifs</small>
+                            </span>
+                        </a></li>
+                        <li><a href="{% url 'restaurant:opening_hours' %}" class="service-link" data-service="horaires">
+                            <i class="fas fa-clock"></i>
+                            <span class="service-text">
+                                <strong>Horaires & accès</strong>
+                                <small>Plan d'accès & parking</small>
+                            </span>
+                        </a></li>
+                        <li><a href="#newsletter-email" class="service-link" data-service="newsletter">
+                            <i class="fas fa-bell"></i>
+                            <span class="service-text">
+                                <strong>Newsletter</strong>
+                                <small>Offres & nouveautés</small>
+                            </span>
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact et réseaux sociaux -->
+                <div class="footer-section-modern">
+                    <h3>Contact & Réseaux</h3>
+                    <ul>
+                        {% if settings.phone %}
+                        <li><a href="tel:{{ settings.phone }}"><i class="fas fa-phone"></i>{{ settings.phone }}</a></li>
+                        {% endif %}
+                        {% if settings.email %}
+                        <li><a href="mailto:{{ settings.email }}"><i class="fas fa-envelope"></i>{{ settings.email }}</a></li>
+                        {% endif %}
+                        {% if settings.address %}
+                        <li><a href="{% url 'restaurant:opening_hours' %}"><i class="fas fa-map-marker-alt"></i>{{ settings.address|linebreaksbr }}</a></li>
+                        {% endif %}
+                    </ul>
+                    
+                    {% if settings.facebook_url or settings.instagram_url or settings.twitter_url or settings.youtube_url %}
+                    <div class="social-icons-modern">
+                        {% if settings.facebook_url %}
+                        <a href="{{ settings.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+                        {% if settings.instagram_url %}
+                        <a href="{{ settings.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                        {% if settings.twitter_url %}
+                        <a href="{{ settings.twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+                        {% if settings.youtube_url %}
+                        <a href="{{ settings.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Footer bottom -->
+            <div class="footer-bottom-modern">
+                <p>&copy; {% now "Y" %} {{ settings.site_name }}. Tous droits réservés.</p>
+                <div class="footer-links-modern">
+                    <a href="{% url 'restaurant:privacy_policy' %}">Politique de confidentialité</a>
+                    <a href="{% url 'restaurant:terms_of_service' %}">Conditions d'utilisation</a>
+                    <a href="{% url 'restaurant:legal_notices' %}">Mentions légales</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer src="{% static 'js/script.js' %}?v=20261012"></script>
+    
+    {% block extra_js %}{% endblock %}
+    
+    <script>
+        // Newsletter subscription
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            if (!email) {
+                showNotification('Please enter an email address.');
+                return;
+            }
+            
+            fetch('{% url "restaurant:newsletter_subscribe" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `email=${encodeURIComponent(email)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                showNotification(data.message);
+                if (data.success) {
+                    document.getElementById('newsletter-email').value = '';
+                }
+            })
+            .catch(error => {
+                showNotification('An error occurred. Please try again.');
+            });
+        }
+        
+        // Add to cart functionality with cart counter
+        function addToCart(dishId) {
+            fetch('{% url "restaurant:add_to_cart" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `dish_id=${dishId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mettre à jour le badge du panier
+                    updateCartBadge(data.cart_count);
+                    
+                    // Afficher la notification avec le compteur
+                    const itemText = data.cart_count === 1 ? 'article' : 'articles';
+                    showNotification(`✅ ${data.message} (${data.cart_count} ${itemText} dans le panier)`, 'success');
+                    
+                    // Animation du badge du panier
+                    animateCartBadge();
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showNotification('Une erreur est survenue. Veuillez réessayer.', 'error');
+            });
+        }
+        
+        // Get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Système moderne
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeHeader();
+            initializeAnimations();
+            initializeNotifications();
+            initializeCartBadge();
+        });
+
+        // Header moderne avec effet de scroll
+        function initializeHeader() {
+            const header = document.querySelector('.header');
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                lastScrollY = currentScrollY;
+            });
+        }
+
+        // Animations modernes
+        function initializeAnimations() {
+            // Animation d'entrée pour les éléments
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observer les éléments avec animation
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // Système de notifications moderne
+        function initializeNotifications() {
+            // Notification de bienvenue
+            setTimeout(() => {
+                showNotification('Bienvenue sur notre site restaurant en mode sombre !', 'success');
+            }, 1000);
+
+        }
+
+        function showNotification(message, type = 'info') {
+            // Supprimer les notifications existantes
+            const existingNotifications = document.querySelectorAll('.notification-toast');
+            existingNotifications.forEach(notification => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            });
+            
+            // Créer la nouvelle notification
+            const notification = document.createElement('div');
+            notification.className = `notification-toast ${type}`;
+            
+            // Ajouter une icône selon le type
+            const icon = document.createElement('i');
+            icon.className = getNotificationIcon(type);
+            icon.style.marginRight = '0.5rem';
+            
+            const text = document.createElement('span');
+            text.textContent = message;
+            
+            notification.appendChild(icon);
+            notification.appendChild(text);
+            
+            // Ajouter au DOM
+            document.body.appendChild(notification);
+            
+            // Afficher avec animation
+            requestAnimationFrame(() => {
+                notification.classList.add('show');
+            });
+            
+            // Masquer automatiquement après 5 secondes
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            return icons[type] || icons.info;
+        }
+
+        // Mettre à jour le badge du panier
+        function updateCartBadge(count) {
+            const cartBadge = document.querySelector('.cart-badge');
+            if (cartBadge) {
+                cartBadge.textContent = count;
+                if (count > 0) {
+                    cartBadge.style.display = 'flex';
+                    cartBadge.style.animation = 'none';
+                    cartBadge.offsetHeight; // Trigger reflow
+                    cartBadge.style.animation = 'cartBadgePulse 0.6s ease-in-out';
+                } else {
+                    cartBadge.style.display = 'none';
+                }
+            }
+        }
+
+        // Animation du badge du panier
+        function animateCartBadge() {
+            const cartBadge = document.querySelector('.cart-badge');
+            const cartIcon = document.querySelector('.cart-icon');
+            
+            if (cartBadge) {
+                cartBadge.style.animation = 'cartBadgeBounce 0.8s ease-in-out';
+            }
+            
+            if (cartIcon) {
+                cartIcon.style.animation = 'cartIconShake 0.6s ease-in-out';
+            }
+        }
+
+        // Initialiser le badge du panier au chargement
+        function initializeCartBadge() {
+            // Récupérer le nombre d'articles dans le panier depuis le serveur
+            fetch('{% url "restaurant:get_cart_count" %}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateCartBadge(data.cart_count);
+                    }
+                })
+                .catch(error => {
+                    console.log('Erreur lors du chargement du compteur du panier:', error);
+                });
+        }
+
+        // Exemple d'utilisation des notifications
+        function showWelcomeNotification() {
+            setTimeout(() => {
+                showNotification('Bienvenue sur notre site restaurant ! 🍽️', 'success');
+            }, 1000);
+        }
+
+        // Afficher la notification de bienvenue au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            showWelcomeNotification();
+        });
+    </script>
+</body>
+</html> 

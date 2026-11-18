@@ -1,0 +1,99 @@
+{% extends 'restaurant/services/base_service.html' %}
+
+{% block service_content %}
+<div class="service-grid">
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <h3>Mariages</h3>
+        <p>Créez des moments inoubliables avec notre service de mariage personnalisé. De la cérémonie intime au grand banquet.</p>
+        <ul class="service-features">
+            <li>Menu personnalisé</li>
+            <li>Décoration sur mesure</li>
+            <li>Service professionnel</li>
+            <li>Coordination complète</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-birthday-cake"></i>
+        </div>
+        <h3>Anniversaires</h3>
+        <p>Célébrez vos anniversaires dans un cadre élégant avec nos menus festifs et notre service attentionné.</p>
+        <ul class="service-features">
+            <li>Gâteaux personnalisés</li>
+            <li>Décoration festive</li>
+            <li>Animations optionnelles</li>
+            <li>Photos souvenirs</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>Séminaires</h3>
+        <p>Organisez vos événements professionnels avec notre service traiteur d'entreprise et nos salles équipées.</p>
+        <ul class="service-features">
+            <li>Équipements audiovisuels</li>
+            <li>Pauses café gourmandes</li>
+            <li>Menus adaptés</li>
+            <li>Service discret</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-glass-cheers"></i>
+        </div>
+        <h3>Cocktails</h3>
+        <p>Événements cocktails élégants avec nos barmans experts et notre sélection de spiritueux d'exception.</p>
+        <ul class="service-features">
+            <li>Cocktails signature</li>
+            <li>Canapés raffinés</li>
+            <li>Service en continu</li>
+            <li>Ambiance sophistiquée</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h3>Événements culturels</h3>
+        <p>Dîners de gala, lancements de produits, vernissages... Nous adaptons nos services à tous vos événements.</p>
+        <ul class="service-features">
+            <li>Menus thématiques</li>
+            <li>Décoration artistique</li>
+            <li>Service premium</li>
+            <li>Coordination événementielle</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <div class="service-card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h3>Événements sur mesure</h3>
+        <p>Votre événement est unique, notre approche aussi. Créons ensemble l'expérience parfaite pour vos invités.</p>
+        <ul class="service-features">
+            <li>Consultation personnalisée</li>
+            <li>Menu créatif</li>
+            <li>Décoration exclusive</li>
+            <li>Service dédié</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Section Contact -->
+<div style="text-align: center; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #1a1a1a; margin-bottom: 1rem;">Prêt à organiser votre événement ?</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Contactez-nous pour discuter de vos besoins et obtenir un devis personnalisé.</p>
+    <a href="{% url 'restaurant:contact' %}" class="service-cta">
+        <i class="fas fa-envelope"></i>
+        Nous contacter
+    </a>
+</div>
+{% endblock %}
