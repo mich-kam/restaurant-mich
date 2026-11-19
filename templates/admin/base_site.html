@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | Bites Restaurant{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/admin-theme.css' %}">
+{% endblock %}
+
+{% block branding %}
+    <div id="site-name">
+        <a href="{% url 'admin:index' %}" class="bites-admin-brand">
+            <span class="bites-admin-mark" aria-hidden="true">B</span>
+            <span>Bites <span class="bites-admin-brand-detail">Restaurant</span></span>
+        </a>
+    </div>
+{% endblock %}
+
+{% block welcome-msg %}
+    Bienvenue, <strong>{% firstof user.get_short_name user.get_username %}</strong>
+{% endblock %}
+
+{% block nav-global %}
+    <a class="bites-admin-site-link" href="{% url 'restaurant:home' %}">Voir le site</a>
+{% endblock %}
